@@ -1,0 +1,48 @@
+Buenos Aires-Cordoba
+Buenos Aires-Entre Rios
+Buenos Aires-Santa Fe
+Buenos Aires-La Pampa
+Buenos Aires-Rio Negro
+Catamarca-Tucuman
+Catamarca-Salta
+Catamarca-Santiago del Estero
+Catamarca-Cordoba
+Catamarca-La Rioja
+Chaco-Formosa
+Chaco-Salta
+Chaco-Santiago del Estero
+Chaco-Santa Fe
+Corrientes-Misiones
+Corrientes-Chaco
+Corrientes-Santa Fe
+Corrientes-Entre Rios
+Cordoba-Santa Fe
+Cordoba-Santiago del Estero
+Cordoba-La Rioja
+Cordoba-San Luis
+Cordoba-La Pampa
+Chubut-Rio Negro
+Chubut-Santa Cruz
+Entre Rios-Santa Fe
+Formosa-Salta
+Jujuy-Salta
+La Pampa-San Luis
+La Pampa-Mendoza
+La Pampa-Neuquen
+La Pampa-Rio Negro
+La Rioja-San Luis
+La Rioja-San Juan
+Mendoza-San Juan
+Mendoza-San Luis
+Mendoza-Neuquen
+Neuquen-Rio Negro
+Santa Fe-Santiago del Estero
+Santiago del Estero-Salta
+Santiago del Estero-Tucuman
+Salta-Jujuy
+Salta-Tucuman
+San Juan-San Luis
+Santa Cruz-Tierra del Fuego
+
+
+
