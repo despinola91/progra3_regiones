@@ -1,4 +1,3 @@
-
 package interfaz;
 
 import java.awt.EventQueue;
@@ -21,6 +20,7 @@ import javax.swing.SwingConstants;
 public class PantallaBienvenida {
 
 	private JFrame frame;
+	
 
 	/**
 	 * Launch the application.
@@ -90,8 +90,8 @@ public class PantallaBienvenida {
 
 	protected void mostrarPantallaMapa() { // Crea la nueva ventana, la hace visible y cierra la primera
 		MainForm frame2 = new MainForm();
-		frame2.setVisible(true);
-		frame.dispose();
+		frame2.frmProvinciasArgentinas.setVisible(true);
+		getFrame().dispose();
 	}
 
 	/*

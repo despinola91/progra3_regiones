@@ -25,7 +25,7 @@ import java.awt.Dimension;
 public class MainForm 
 {
 
-	private JFrame frmProvinciasArgentinas;
+	public JFrame frmProvinciasArgentinas;
 	private JPanel panelMapa;
 	private JPanel panelControles;
 	private JMapViewer _mapa;
@@ -142,8 +142,6 @@ public class MainForm
 		panelControles.add(btnDibujarPolgono);
 	}
 
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}	
+
+
 }
