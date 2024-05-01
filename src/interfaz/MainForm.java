@@ -66,8 +66,9 @@ public class MainForm
 	private void initialize() 
 	{
 		frmProvinciasArgentinas = new JFrame();
+		frmProvinciasArgentinas.setResizable(false);
 		frmProvinciasArgentinas.setTitle("Provincias Argentinas");
-		frmProvinciasArgentinas.setBounds(200, 25, 725, 560);
+		frmProvinciasArgentinas.setBounds(200, 25, 725, 575);
 		frmProvinciasArgentinas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProvinciasArgentinas.getContentPane().setLayout(null);
 		
@@ -141,7 +142,4 @@ public class MainForm
 		panelControles.add(btnEliminar);
 		panelControles.add(btnDibujarPolgono);
 	}
-
-
-
 }
