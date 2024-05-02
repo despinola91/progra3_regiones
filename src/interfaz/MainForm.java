@@ -96,6 +96,7 @@ public class MainForm
 		dibujarPoligono();
 		eliminarPoligono();		
 		cargarSimilitudes();
+		dividirRegiones();
 	}
 	
 	private void detectarCoordenadas() 
@@ -149,6 +150,7 @@ public class MainForm
 		
 	}
 	
+	//Considerar estos botones de abajo, simplemente agruparlos en una funcion "botones" y llamarla en el inicializate
 	private void cargarSimilitudes() {
 	    JButton btnCargarSimilitudes = new JButton("Cargar Similitudes");
 	    btnCargarSimilitudes.addActionListener(new ActionListener() {
@@ -168,5 +170,26 @@ public class MainForm
 	    });
 	    btnCargarSimilitudes.setBounds(21, 21, 195, 23);
 	    panelControles.add(btnCargarSimilitudes);
+	}
+	
+	private void dividirRegiones() {
+	    JButton btnDividirRegiones = new JButton("Dividir Regiones");
+	    btnDividirRegiones.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            String input = JOptionPane.showInputDialog("En cuantas Regiones desea dividir?");
+	            try {
+	                int numRegiones = Integer.parseInt(input);
+	                if (numRegiones > 0) {
+	                    System.out.println("Numero de regiones: " + numRegiones); //De prueba, despues lo eliminamos
+	                } else {
+	                    JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
+	                }
+	            } catch (NumberFormatException ex) {
+	                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        }
+	    });
+	    btnDividirRegiones.setBounds(21, 175, 195, 23);
+	    panelControles.add(btnDividirRegiones);
 	}
 }
