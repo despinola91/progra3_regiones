@@ -24,6 +24,10 @@ import java.awt.Point;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.SwingConstants;
+import javax.swing.JList;
+import javax.swing.JComboBox;
+import javax.swing.JTextPane;
+import javax.swing.JLabel;
 
 public class MainForm 
 {
@@ -37,6 +41,7 @@ public class MainForm
 	private MapPolygonImpl _poligono;
 	private JButton btnDibujarPolgono ;
 	private boolean ventanaCargaSimilitudesAbierta = false;
+	private JComboBox comboBox_Provincia2;
 
 	/**
 	 * Launch the application.
@@ -72,7 +77,7 @@ public class MainForm
 		frmProvinciasArgentinas = new JFrame();
 		frmProvinciasArgentinas.setResizable(false);
 		frmProvinciasArgentinas.setTitle("Provincias Argentinas");
-		frmProvinciasArgentinas.setBounds(200, 25, 725, 575);
+		frmProvinciasArgentinas.setBounds(200, 25, 780, 575);
 		frmProvinciasArgentinas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProvinciasArgentinas.getContentPane().setLayout(null);
 		
@@ -81,7 +86,8 @@ public class MainForm
 		frmProvinciasArgentinas.getContentPane().add(panelMapa);
 		
 		panelControles = new JPanel();
-		panelControles.setBounds(457, 11, 242, 446);
+		panelControles.setToolTipText("");
+		panelControles.setBounds(457, 11, 297, 446);
 		frmProvinciasArgentinas.getContentPane().add(panelControles);		
 		panelControles.setLayout(null);
 		
@@ -95,7 +101,7 @@ public class MainForm
 		detectarCoordenadas();
 		dibujarPoligono();
 		eliminarPoligono();		
-		cargarSimilitudes();
+		cargaSimilaridades();
 		dividirRegiones();
 	}
 	
@@ -123,7 +129,7 @@ public class MainForm
 	private void dibujarPoligono() 
 	{
 		btnDibujarPolgono = new JButton("Dibujar Grafo");
-		btnDibujarPolgono.setBounds(21, 71, 195, 23);
+		btnDibujarPolgono.setBounds(61, 26, 195, 23);
 		btnDibujarPolgono.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -144,33 +150,11 @@ public class MainForm
 				 _mapa.removeMapPolygon(_poligono);
 			}
 		});
-		btnEliminar.setBounds(21, 123, 195, 23);
+		btnEliminar.setBounds(61, 77, 195, 23);
 		panelControles.add(btnEliminar);
-		panelControles.add(btnDibujarPolgono);
-		
+		panelControles.add(btnDibujarPolgono);		
 	}
 	
-	//Considerar estos botones de abajo, simplemente agruparlos en una funcion "botones" y llamarla en el inicializate
-	private void cargarSimilitudes() {
-	    JButton btnCargarSimilitudes = new JButton("Cargar Similitudes");
-	    btnCargarSimilitudes.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            if (!ventanaCargaSimilitudesAbierta) { 
-	            	ventanaCargaSimilitudesAbierta = true; 
-	                VentanaCargaSimilitudes ventana = new VentanaCargaSimilitudes();
-	                ventana.addWindowListener(new WindowAdapter() {
-	                    @Override
-	                    public void windowClosed(WindowEvent e) {
-	                    	ventanaCargaSimilitudesAbierta = false; 
-	                    }
-	                });
-	                ventana.setVisible(true);
-	            }
-	        }
-	    });
-	    btnCargarSimilitudes.setBounds(21, 21, 195, 23);
-	    panelControles.add(btnCargarSimilitudes);
-	}
 	
 	private void dividirRegiones() {
 	    JButton btnDividirRegiones = new JButton("Dividir Regiones");
@@ -189,7 +173,43 @@ public class MainForm
 	            }
 	        }
 	    });
-	    btnDividirRegiones.setBounds(21, 175, 195, 23);
+		btnDividirRegiones.setBounds(61, 348, 195, 23);
 	    panelControles.add(btnDividirRegiones);
+	}
+	
+	private void cargaSimilaridades() {
+	    
+	    JComboBox comboBox_Provincia1 = new JComboBox();
+	    comboBox_Provincia1.setToolTipText("Provincia");
+	    comboBox_Provincia1.setBounds(25, 151, 77, 22);
+	    panelControles.add(comboBox_Provincia1);
+	    
+	    comboBox_Provincia2 = new JComboBox();
+	    comboBox_Provincia2.setBounds(112, 151, 77, 22);
+	    panelControles.add(comboBox_Provincia2);
+	    
+	    JTextPane textPane = new JTextPane();
+	    textPane.setBounds(209, 151, 62, 22);
+	    panelControles.add(textPane);
+	    
+	    JLabel lblNewLabel = new JLabel("Provincia");
+	    lblNewLabel.setBounds(25, 127, 77, 23);
+	    panelControles.add(lblNewLabel);
+	    
+	    JLabel lblNewLabel_1 = new JLabel("Provincia");
+	    lblNewLabel_1.setBounds(112, 127, 77, 23);
+	    panelControles.add(lblNewLabel_1);
+	    
+	    JLabel lblNewLabel_2 = new JLabel("Similaridad");
+	    lblNewLabel_2.setBounds(209, 127, 77, 23);
+	    panelControles.add(lblNewLabel_2);
+	    
+	    JButton btnCargarSimilitud = new JButton("Cargar Similitud");
+	    btnCargarSimilitud.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    	}
+	    });
+	    btnCargarSimilitud.setBounds(94, 196, 136, 23);
+	    panelControles.add(btnCargarSimilitud);
 	}
 }
