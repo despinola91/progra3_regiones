@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.awt.Point;
 import java.awt.Component;
@@ -34,6 +36,7 @@ public class MainForm
 	private JButton btnEliminar;
 	private MapPolygonImpl _poligono;
 	private JButton btnDibujarPolgono ;
+	private boolean ventanaCargaSimilitudesAbierta = false;
 
 	/**
 	 * Launch the application.
@@ -146,17 +149,24 @@ public class MainForm
 		
 	}
 	
-	private void cargarSimilitudes()
-	{
-		JButton btnCargarSimilitudes = new JButton("Cargar Similitudes");
-		btnCargarSimilitudes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VentanaCargaSimilitudes ventana = new VentanaCargaSimilitudes();
-				ventana.setAlwaysOnTop(true); // Para que la ventana esté siempre arriba
-				ventana.setVisible(true);
-			}
-		});
-		btnCargarSimilitudes.setBounds(21, 21, 195, 23);
-		panelControles.add(btnCargarSimilitudes);
+	private void cargarSimilitudes() {
+	    JButton btnCargarSimilitudes = new JButton("Cargar Similitudes");
+	    btnCargarSimilitudes.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            if (!ventanaCargaSimilitudesAbierta) { 
+	            	ventanaCargaSimilitudesAbierta = true; 
+	                VentanaCargaSimilitudes ventana = new VentanaCargaSimilitudes();
+	                ventana.addWindowListener(new WindowAdapter() {
+	                    @Override
+	                    public void windowClosed(WindowEvent e) {
+	                    	ventanaCargaSimilitudesAbierta = false; 
+	                    }
+	                });
+	                ventana.setVisible(true);
+	            }
+	        }
+	    });
+	    btnCargarSimilitudes.setBounds(21, 21, 195, 23);
+	    panelControles.add(btnCargarSimilitudes);
 	}
 }
