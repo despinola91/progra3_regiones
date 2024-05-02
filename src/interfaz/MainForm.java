@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.awt.Point;
 import java.awt.Component;
 import java.awt.Dimension;
+import javax.swing.SwingConstants;
 
 public class MainForm 
 {
@@ -91,6 +92,7 @@ public class MainForm
 		detectarCoordenadas();
 		dibujarPoligono();
 		eliminarPoligono();		
+		cargarSimilitudes();
 	}
 	
 	private void detectarCoordenadas() 
@@ -141,5 +143,20 @@ public class MainForm
 		btnEliminar.setBounds(21, 123, 195, 23);
 		panelControles.add(btnEliminar);
 		panelControles.add(btnDibujarPolgono);
+		
+	}
+	
+	private void cargarSimilitudes()
+	{
+		JButton btnCargarSimilitudes = new JButton("Cargar Similitudes");
+		btnCargarSimilitudes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentanaCargaSimilitudes ventana = new VentanaCargaSimilitudes();
+				ventana.setAlwaysOnTop(true); // Para que la ventana esté siempre arriba
+				ventana.setVisible(true);
+			}
+		});
+		btnCargarSimilitudes.setBounds(21, 21, 195, 23);
+		panelControles.add(btnCargarSimilitudes);
 	}
 }
