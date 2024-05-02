@@ -113,7 +113,7 @@ public class MainForm
 				Coordinate markeradd = (Coordinate)
 				_mapa.getPosition(e.getPoint());
 				_lasCoordenadas.add(markeradd);
-				String nombre = JOptionPane.showInputDialog("Nombre de la provincia: ");
+				String nombre = JOptionPane.showInputDialog("elegir limite: ");
 				_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));
 				
 			}}
