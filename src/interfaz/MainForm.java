@@ -121,6 +121,7 @@ public class MainForm
 				_lasCoordenadas.add(markeradd);
 				String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
 				_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
+				//Agrega nombre a la lista
 				
 			}}
 		});
