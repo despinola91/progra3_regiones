@@ -11,6 +11,8 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
+import negocio.Grafo;
+
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -28,6 +30,7 @@ import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class MainForm 
 {
@@ -97,6 +100,11 @@ public class MainForm
 		_mapa.setPreferredSize(new Dimension(437, 512));
 				
 		panelMapa.add(_mapa);
+		
+		JLabel lblNewLabel_3 = new JLabel("New label");
+		lblNewLabel_3.setIcon(new ImageIcon("C:\\Users\\Josy\\Documents\\GitHub\\progra3_regiones\\fondoBandera.png"));
+		lblNewLabel_3.setBounds(0, 0, 766, 538);
+		frmProvinciasArgentinas.getContentPane().add(lblNewLabel_3);
 
 		detectarCoordenadas();
 		dibujarPoligono();
@@ -127,7 +135,7 @@ public class MainForm
 		});
 	}
 
-	private void dibujarPoligono() 
+	private void dibujarPoligono()  //va dibujando el grafo con las provincias agregadas en el mapa
 	{
 		btnDibujarPolgono = new JButton("Dibujar Grafo");
 		btnDibujarPolgono.setBounds(61, 26, 195, 23);
@@ -137,6 +145,7 @@ public class MainForm
 			{
 				_poligono = new MapPolygonImpl(_lasCoordenadas);
 				_mapa.addMapPolygon(_poligono);
+				
 			}
 		});
 	}
