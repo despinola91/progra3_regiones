@@ -184,7 +184,7 @@ public class MainForm
 	
 	private void dividirRegiones() {
 		
-	    JLabel lblTituloRegiones = new JLabel("Creacion de relaciones");
+	    JLabel lblTituloRegiones = new JLabel("Creacion de regiones");
 	    lblTituloRegiones.setFont(new Font("Tahoma", Font.ITALIC, 16));
 	    lblTituloRegiones.setBounds(25, 11, 208, 22);
 	    panelControlRegiones.add(lblTituloRegiones);
