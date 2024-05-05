@@ -11,7 +11,7 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
-import negocio.Grafo;
+import negocio.Mapa;
 
 import javax.swing.JButton;
 
@@ -45,6 +45,9 @@ public class MainForm
 	private JButton btnDibujarPolgono ;
 	private boolean ventanaCargaSimilitudesAbierta = false;
 	private JComboBox comboBox_Provincia2;
+	private JComboBox comboBox_Provincia1;
+	
+	private JComboBox<String> comboBoxProvincias;
 
 	/**
 	 * Launch the application.
@@ -101,7 +104,7 @@ public class MainForm
 				
 		panelMapa.add(_mapa);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
+		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setIcon(new ImageIcon("fondoBandera.png"));
 		lblNewLabel_3.setBounds(0, 0, 766, 528);
 		frmProvinciasArgentinas.getContentPane().add(lblNewLabel_3);
@@ -130,7 +133,9 @@ public class MainForm
 				String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
 				_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
 				//Agrega nombre a la lista
-				
+				if (nombre != null && !nombre.isEmpty()) {
+					comboBox_Provincia1.addItem(nombre); // Agregar provincia a la lista desplegable
+                }
 			}}
 		});
 	}
@@ -189,7 +194,7 @@ public class MainForm
 	
 	private void cargaSimilaridades() {
 	    
-	    JComboBox comboBox_Provincia1 = new JComboBox();
+	    comboBox_Provincia1 = new JComboBox();
 	    comboBox_Provincia1.setToolTipText("Provincia");
 	    comboBox_Provincia1.setBounds(25, 151, 77, 22);
 	    panelControles.add(comboBox_Provincia1);
