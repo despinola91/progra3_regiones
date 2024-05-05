@@ -12,7 +12,6 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 import negocio.Mapa;
-import negocio.Provincia;
 
 import javax.swing.JButton;
 
@@ -31,6 +30,7 @@ import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 
@@ -52,6 +52,8 @@ public class MainForm
 	private JComboBox<String> comboBoxProvincias;
 	private JPanel panelControlRegiones;
 	private JLabel lblBandera;
+	
+	private Mapa mapa;
 
 	/**
 	 * Launch the application.
@@ -118,6 +120,8 @@ public class MainForm
 		lblBandera.setIcon(new ImageIcon("fondoBandera.png"));
 		lblBandera.setBounds(0, 0, 766, 528);
 		frmProvinciasArgentinas.getContentPane().add(lblBandera);
+		
+		mapa = new Mapa();
 
 		detectarCoordenadas();
 		//dibujarPoligono();
@@ -139,13 +143,17 @@ public class MainForm
 			{
 				Coordinate markeradd = (Coordinate)
 				_mapa.getPosition(e.getPoint());
-				_lasCoordenadas.add(markeradd);
 				String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
-				_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
 				//Agrega nombre a la lista
 				if (nombre != null && !nombre.isEmpty()) {
-					comboBox_Provincia1.addItem(nombre); // Agregar provincia a la lista desplegable
+					_lasCoordenadas.add(markeradd);
+					_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
 					
+					mapa.agregarProvincia(nombre);
+
+					comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
+					comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
+
 				}
 			}}
 		});
@@ -184,7 +192,7 @@ public class MainForm
 	
 	private void dividirRegiones() {
 		
-	    JLabel lblTituloRegiones = new JLabel("Creacion de relaciones");
+	    JLabel lblTituloRegiones = new JLabel("Creacion de regiones");
 	    lblTituloRegiones.setFont(new Font("Tahoma", Font.ITALIC, 16));
 	    lblTituloRegiones.setBounds(25, 11, 208, 22);
 	    panelControlRegiones.add(lblTituloRegiones);

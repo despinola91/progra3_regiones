@@ -1,93 +1,102 @@
 package negocio;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Set;
 
 public class Mapa {
 
-    private static ArrayList<Provincia> provincias;
-
+    private HashMap<String, Integer> provincias = new HashMap<>();
+    //private static int cantidadProvincias = 0;
     private int[][] matrizDeRelacion;
-
-    public Mapa (int provincias)
+    
+    public Mapa()
 	{
-		matrizDeRelacion = new int[provincias][provincias];
+        matrizDeRelacion = new int[0][0];
 	}
 
-    public boolean agregarRelacion(Provincia a, Provincia b, int similitud)
+    public void agregarRelacion(String nombreProvincia1, String nombreProvincia2, int similitud)
 	{
-		if ( esRelacionValida(a, b) ) {
-            matrizDeRelacion[a.obtenerCodigo()][b.obtenerCodigo()] = similitud;
-            matrizDeRelacion[b.obtenerCodigo()][a.obtenerCodigo()] = similitud;
-            return true;
+		validarRelacion(nombreProvincia1, nombreProvincia2);
+
+        matrizDeRelacion[provincias.get(nombreProvincia1)][provincias.get(nombreProvincia2)] = similitud;
+        matrizDeRelacion[provincias.get(nombreProvincia2)][provincias.get(nombreProvincia1)] = similitud;
+        
+	}
+
+    public void eliminarRelacion(String nombreProvincia1, String nombreProvincia2)
+	{
+		validarProvincia(nombreProvincia1);
+		validarProvincia(nombreProvincia2);
+		validarRelacion(nombreProvincia1, nombreProvincia2);
+
+		matrizDeRelacion[provincias.get(nombreProvincia1)][provincias.get(nombreProvincia2)] = 0;
+        matrizDeRelacion[provincias.get(nombreProvincia2)][provincias.get(nombreProvincia1)] = 0;
+	}
+
+    private void validarRelacion (String nombreProvincia1, String nombreProvincia2) {
+        if (!existeProvincia(nombreProvincia1) || !existeProvincia(nombreProvincia2) || nombreProvincia1 == nombreProvincia2) {
+            throw new IllegalArgumentException("La relación es inválida");
         }
-        else {
-            return false;
+    }
+
+    public boolean existeRelacion(String nombreProvincia1, String nombreProvincia2)
+	{
+		validarProvincia(nombreProvincia1);
+		validarProvincia(nombreProvincia2);
+		validarRelacion(nombreProvincia1, nombreProvincia2);
+
+		return matrizDeRelacion[provincias.get(nombreProvincia1)][provincias.get(nombreProvincia2)] > 0;
+	}
+
+    public void agregarProvincia (String nombreProvincia) {
+        provincias.put(nombreProvincia, provincias.size());
+
+        int tamanioActual = matrizDeRelacion.length;
+        int nuevoTamanio = matrizDeRelacion.length + 1;
+        int[][] nuevaMatrizRelacion = new int[nuevoTamanio][nuevoTamanio];
+
+        for (int i = 0; i < tamanioActual; i++) {
+            for (int j = 0; j < tamanioActual; j++) {
+                nuevaMatrizRelacion[i][j] = matrizDeRelacion[i][j];
+            }
         }
-	}
 
-    public void eliminarRelacion(Provincia a, Provincia b)
-	{
-		// verificarVertice(i);
-		// verificarVertice(j);
-		// verificarDistintos(i, j);
-
-		matrizDeRelacion[a.obtenerCodigo()][b.obtenerCodigo()] = 0;
-        matrizDeRelacion[b.obtenerCodigo()][a.obtenerCodigo()] = 0;
-	}
-
-    private boolean esRelacionValida (Provincia a, Provincia b) {
-        return true;
+        // Update the adjacency matrix and the number of vertices
+        matrizDeRelacion = nuevaMatrizRelacion;
     }
 
-    public boolean existeRelacion(int codigoProvincia1, int codigoProvincia2)
-	{
-		// verificarVertice(i);
-		// verificarVertice(j);
-		// verificarDistintos(i, j);
+    public void eliminarProvincia (String nombreProvincia) {
+        validarProvincia(nombreProvincia);
+        provincias.remove(nombreProvincia);
 
-		return matrizDeRelacion[codigoProvincia1][codigoProvincia2] > 0;
-	}
+        int nuevoTamanio = matrizDeRelacion.length - 1;
+        int[][] nuevaMatrizRelacion = new int[nuevoTamanio][nuevoTamanio];
 
-    public boolean agregarProvincia (Provincia provincia) {
+        for (int i = 0; i < nuevoTamanio; i++) {
+            for (int j = 0; j < nuevoTamanio; j++) {
+                nuevaMatrizRelacion[i][j] = matrizDeRelacion[i][j];
+            }
+        }
 
-        provincias.add(provincia);
-        return true;
+        matrizDeRelacion = nuevaMatrizRelacion;
     }
 
-    public boolean eliminarProvincia (Provincia provincia) {
-
-        provincias.remove(provincia);
-        return true;
+    public void validarProvincia(String nombreProvincia) {
+        if (!provincias.containsKey(nombreProvincia)) {
+            throw new IllegalArgumentException("La provincia es inválida");
+        }
     }
 
-    public Set<Provincia> obtenerProvinciasLimitrofes(int codigoProvincia)
-	{
-		//verificarVertice(i);
-		
-		Set<Provincia> provinciasLimitrofes = new HashSet<Provincia>();
-		for(int j = 0; j < provincias.size(); ++j) if( codigoProvincia != j )
-		{
-			if( this.existeRelacion(codigoProvincia,j) )
-                provinciasLimitrofes.add(obtenerProvincia(j));
-		}
-		
-		return provinciasLimitrofes;
-	}
-
-    private static Provincia obtenerProvincia (int indice) {
-        return provincias.get(indice);
+    public boolean existeProvincia (String nombreProvincia) {
+        return provincias.containsKey(nombreProvincia);
     }
 
-    public int obtenerCantidadProvinciasLimitrofes(int i)
-	{
-		//verificarVertice(i);
-		return obtenerProvinciasLimitrofes(i).size();
-	}
+    public int obtenerDimensionMatrizRelacion() {
+        return matrizDeRelacion.length;
+    }
 
-    public static int obtenerCantidadProvincias() {
-        return provincias.size();
+    public Set<String> obtenerProvincias() {
+        return provincias.keySet();
     }
 
 	
