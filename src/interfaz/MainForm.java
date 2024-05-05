@@ -12,7 +12,6 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 import negocio.Mapa;
-import negocio.Provincia;
 
 import javax.swing.JButton;
 
