@@ -45,11 +45,8 @@ public class MainForm
 	private MapPolygonImpl _poligono;
 	private JButton btnDibujarPolgono ;
 	private boolean ventanaCargaSimilitudesAbierta = false;
-	private JComboBox comboBox_Provincia2;
-	private JComboBox comboBox_Provincia1;
-	
-	private JComboBox<String> comboBoxProvincias;
-
+	private JComboBox<String> comboBox_Provincia2;
+	private JComboBox<String> comboBox_Provincia1;
 	/**
 	 * Launch the application.
 	 */
@@ -170,7 +167,7 @@ public class MainForm
 		btnEliminar.setBounds(61, 77, 195, 23);
 		panelControles.add(btnEliminar);
 		panelControles.add(btnDibujarPolgono);		
-	}
+	} 
 	
 	
 	private void dividirRegiones() {
