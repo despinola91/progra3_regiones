@@ -139,11 +139,11 @@ public class MainForm
 			{
 				Coordinate markeradd = (Coordinate)
 				_mapa.getPosition(e.getPoint());
-				_lasCoordenadas.add(markeradd);
 				String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
-				_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
 				//Agrega nombre a la lista
 				if (nombre != null && !nombre.isEmpty()) {
+					_lasCoordenadas.add(markeradd);
+					_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
 					comboBox_Provincia1.addItem(nombre); // Agregar provincia a la lista desplegable
 					
 				}
