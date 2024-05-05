@@ -1,6 +1,7 @@
 package negocio;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class Mapa {
 
@@ -92,5 +93,9 @@ public class Mapa {
 
     public int obtenerDimensionMatrizRelacion() {
         return matrizDeRelacion.length;
+    }
+
+    public Set<String> obtenerProvincias() {
+        return provincias.keySet();
     }
 }

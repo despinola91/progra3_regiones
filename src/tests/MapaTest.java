@@ -2,6 +2,9 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -61,5 +64,21 @@ class MapaTest {
 		assertTrue(mapa.existeRelacion("Santa Fe", "Buenos Aires"));
 		mapa.eliminarRelacion("Buenos Aires", "Santa Fe");
 		assertFalse(mapa.existeRelacion("Santa Fe", "Buenos Aires"));
+	}
+
+	@Test
+	void obtenerProvinciasTest() {
+		Mapa mapa = new Mapa();
+
+		mapa.agregarProvincia("Buenos Aires");
+		mapa.agregarProvincia("Catamarca");		
+
+		Set<String> provinciasResultado = mapa.obtenerProvincias();
+
+		Set<String> provinciasEsperadas = new HashSet<String>();
+        provinciasEsperadas.add("Buenos Aires");
+		provinciasEsperadas.add("Catamarca");
+
+ 		assertTrue(provinciasEsperadas.equals(provinciasResultado));
 	}
 }
