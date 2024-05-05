@@ -89,5 +89,6 @@ public class Mapa {
     public static int obtenerCantidadProvincias() {
         return provincias.size();
     }
+
 	
 }

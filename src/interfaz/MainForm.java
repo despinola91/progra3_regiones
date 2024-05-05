@@ -12,6 +12,7 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 import negocio.Mapa;
+import negocio.Provincia;
 
 import javax.swing.JButton;
 
@@ -135,7 +136,8 @@ public class MainForm
 				//Agrega nombre a la lista
 				if (nombre != null && !nombre.isEmpty()) {
 					comboBox_Provincia1.addItem(nombre); // Agregar provincia a la lista desplegable
-                }
+					
+				}
 			}}
 		});
 	}
