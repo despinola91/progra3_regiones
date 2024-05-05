@@ -32,21 +32,30 @@ import javax.swing.JComboBox;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 public class MainForm 
 {
 
 	public JFrame frmProvinciasArgentinas;
 	private JPanel panelMapa;
-	private JPanel panelControles;
+	private JPanel panelControlRelaciones;
 	private JMapViewer _mapa;
 	private ArrayList<Coordinate> _lasCoordenadas;
 	private JButton btnEliminar;
 	private MapPolygonImpl _poligono;
 	private JButton btnDibujarPolgono ;
+
 	private boolean ventanaCargaSimilitudesAbierta = false;
 	private JComboBox<String> comboBox_Provincia2;
 	private JComboBox<String> comboBox_Provincia1;
+
+	private JComboBox comboBox_Algoritmo;
+	
+	private JComboBox<String> comboBoxProvincias;
+	private JPanel panelControlRegiones;
+	private JLabel lblBandera;
+
 	/**
 	 * Launch the application.
 	 */
@@ -89,11 +98,11 @@ public class MainForm
 		panelMapa.setBounds(8, 10, 437, 512);
 		frmProvinciasArgentinas.getContentPane().add(panelMapa);
 		
-		panelControles = new JPanel();
-		panelControles.setToolTipText("");
-		panelControles.setBounds(457, 11, 297, 446);
-		frmProvinciasArgentinas.getContentPane().add(panelControles);		
-		panelControles.setLayout(null);
+		panelControlRelaciones = new JPanel();
+		panelControlRelaciones.setToolTipText("");
+		panelControlRelaciones.setBounds(457, 11, 297, 251);
+		frmProvinciasArgentinas.getContentPane().add(panelControlRelaciones);		
+		panelControlRelaciones.setLayout(null);
 		
 		_mapa = new JMapViewer();
 		_mapa.setCenter(new Point(1075, 700));
@@ -102,15 +111,21 @@ public class MainForm
 				
 		panelMapa.add(_mapa);
 		
-		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setIcon(new ImageIcon("fondoBandera.png"));
-		lblNewLabel_3.setBounds(0, 0, 766, 528);
-		frmProvinciasArgentinas.getContentPane().add(lblNewLabel_3);
+		panelControlRegiones = new JPanel();
+		panelControlRegiones.setBounds(455, 273, 299, 249);
+		frmProvinciasArgentinas.getContentPane().add(panelControlRegiones);
+		panelControlRegiones.setLayout(null);
+
+		
+		lblBandera = new JLabel("");
+		lblBandera.setIcon(new ImageIcon("fondoBandera.png"));
+		lblBandera.setBounds(0, 0, 766, 528);
+		frmProvinciasArgentinas.getContentPane().add(lblBandera);
 
 		detectarCoordenadas();
-		dibujarPoligono();
-		eliminarPoligono();		
-		cargaSimilaridades();
+		//dibujarPoligono();
+		//eliminarPoligono();		
+		cargarRelaciones();
 		dividirRegiones();
 	}
 	
@@ -165,65 +180,99 @@ public class MainForm
 			}
 		});
 		btnEliminar.setBounds(61, 77, 195, 23);
+
 		panelControles.add(btnEliminar);
 		panelControles.add(btnDibujarPolgono);		
 	} 
+
+		panelControlRelaciones.add(btnEliminar);
+		panelControlRelaciones.add(btnDibujarPolgono);		
+	}
+
 	
 	
 	private void dividirRegiones() {
-	    JButton btnDividirRegiones = new JButton("Dividir Regiones");
-	    btnDividirRegiones.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            String input = JOptionPane.showInputDialog("En cuantas Regiones desea dividir?");
-	            try {
-	                int numRegiones = Integer.parseInt(input);
-	                if (numRegiones > 0) {
-	                    System.out.println("Numero de regiones: " + numRegiones); //De prueba, despues lo eliminamos
-	                } else {
-	                    JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
-	                }
-	            } catch (NumberFormatException ex) {
-	                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
-	            }
-	        }
-	    });
-		btnDividirRegiones.setBounds(61, 348, 195, 23);
-	    panelControles.add(btnDividirRegiones);
+		
+	    JLabel lblTituloRegiones = new JLabel("Creacion de relaciones");
+	    lblTituloRegiones.setFont(new Font("Tahoma", Font.ITALIC, 16));
+	    lblTituloRegiones.setBounds(25, 11, 208, 22);
+	    panelControlRegiones.add(lblTituloRegiones);
+	    
+	    JLabel lblRegiones = new JLabel("Regiones");
+	    lblRegiones.setBounds(25, 54, 66, 23);
+	    panelControlRegiones.add(lblRegiones);
+	    
+	    JTextPane textCantidadRegiones = new JTextPane();
+	    textCantidadRegiones.setBounds(133, 54, 62, 22);
+	    panelControlRegiones.add(textCantidadRegiones);
+	    
+	    JLabel lblAlgoritmo = new JLabel("Algoritmo");
+	    lblAlgoritmo.setBounds(25, 97, 86, 23);
+	    panelControlRegiones.add(lblAlgoritmo);
+	    
+	    comboBox_Algoritmo = new JComboBox();
+	    comboBox_Algoritmo.setToolTipText("");
+	    comboBox_Algoritmo.setBounds(133, 97, 138, 22);
+	    panelControlRegiones.add(comboBox_Algoritmo);
+	    
+		JButton btnCrearRegiones = new JButton("Crear Regiones");
+		btnCrearRegiones.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        String input = JOptionPane.showInputDialog("En cuantas Regiones desea dividir?");
+		        try {
+		            int numRegiones = Integer.parseInt(input);
+		            if (numRegiones > 0) {
+		                System.out.println("Numero de regiones: " + numRegiones); //De prueba, despues lo eliminamos
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
+		            }
+		        } catch (NumberFormatException ex) {
+		            JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
+		});
+		btnCrearRegiones.setBounds(25, 200, 136, 23);
+		panelControlRegiones.add(btnCrearRegiones);
 	}
 	
-	private void cargaSimilaridades() {
+	private void cargarRelaciones() {
 	    
 	    comboBox_Provincia1 = new JComboBox();
 	    comboBox_Provincia1.setToolTipText("Provincia");
-	    comboBox_Provincia1.setBounds(25, 151, 77, 22);
-	    panelControles.add(comboBox_Provincia1);
+	    comboBox_Provincia1.setBounds(133, 44, 138, 22);
+	    panelControlRelaciones.add(comboBox_Provincia1);
 	    
 	    comboBox_Provincia2 = new JComboBox();
-	    comboBox_Provincia2.setBounds(112, 151, 77, 22);
-	    panelControles.add(comboBox_Provincia2);
+	    comboBox_Provincia2.setBounds(133, 77, 138, 22);
+	    panelControlRelaciones.add(comboBox_Provincia2);
 	    
-	    JTextPane textPane = new JTextPane();
-	    textPane.setBounds(209, 151, 62, 22);
-	    panelControles.add(textPane);
+	    JTextPane textSimilitud = new JTextPane();
+	    textSimilitud.setBounds(133, 125, 62, 22);
+	    panelControlRelaciones.add(textSimilitud);
 	    
-	    JLabel lblNewLabel = new JLabel("Provincia");
-	    lblNewLabel.setBounds(25, 127, 77, 23);
-	    panelControles.add(lblNewLabel);
+	    JLabel lblProvincia1 = new JLabel("Provincia 1");
+	    lblProvincia1.setBounds(25, 44, 77, 23);
+	    panelControlRelaciones.add(lblProvincia1);
 	    
-	    JLabel lblNewLabel_1 = new JLabel("Provincia");
-	    lblNewLabel_1.setBounds(112, 127, 77, 23);
-	    panelControles.add(lblNewLabel_1);
+	    JLabel lblProvincia2 = new JLabel("Provincia 2");
+	    lblProvincia2.setBounds(25, 78, 77, 23);
+	    panelControlRelaciones.add(lblProvincia2);
 	    
-	    JLabel lblNewLabel_2 = new JLabel("Similaridad");
-	    lblNewLabel_2.setBounds(209, 127, 77, 23);
-	    panelControles.add(lblNewLabel_2);
+	    JLabel lblSimilitud = new JLabel("Similitud");
+	    lblSimilitud.setBounds(25, 125, 77, 23);
+	    panelControlRelaciones.add(lblSimilitud);
 	    
-	    JButton btnCargarSimilitud = new JButton("Cargar Similitud");
-	    btnCargarSimilitud.addActionListener(new ActionListener() {
+	    JButton btnCrearRelacion = new JButton("Crear Relacion");
+	    btnCrearRelacion.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    	}
 	    });
-	    btnCargarSimilitud.setBounds(94, 196, 136, 23);
-	    panelControles.add(btnCargarSimilitud);
+	    btnCrearRelacion.setBounds(25, 183, 136, 23);
+	    panelControlRelaciones.add(btnCrearRelacion);
+	    
+	    JLabel lblTituloRelaciones = new JLabel("Creacion de relaciones");
+	    lblTituloRelaciones.setFont(new Font("Tahoma", Font.ITALIC, 16));
+	    lblTituloRelaciones.setBounds(25, 11, 208, 22);
+	    panelControlRelaciones.add(lblTituloRelaciones);
 	}
 }
