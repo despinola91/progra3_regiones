@@ -102,8 +102,8 @@ public class MainForm
 		panelMapa.add(_mapa);
 		
 		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setIcon(new ImageIcon("C:\\Users\\Josy\\Documents\\GitHub\\progra3_regiones\\fondoBandera.png"));
-		lblNewLabel_3.setBounds(0, 0, 766, 538);
+		lblNewLabel_3.setIcon(new ImageIcon("fondoBandera.png"));
+		lblNewLabel_3.setBounds(0, 0, 766, 528);
 		frmProvinciasArgentinas.getContentPane().add(lblNewLabel_3);
 
 		detectarCoordenadas();
