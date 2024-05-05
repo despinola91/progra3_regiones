@@ -30,6 +30,7 @@ import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 
@@ -51,6 +52,8 @@ public class MainForm
 	private JComboBox<String> comboBoxProvincias;
 	private JPanel panelControlRegiones;
 	private JLabel lblBandera;
+	
+	private Mapa mapa;
 
 	/**
 	 * Launch the application.
@@ -117,6 +120,8 @@ public class MainForm
 		lblBandera.setIcon(new ImageIcon("fondoBandera.png"));
 		lblBandera.setBounds(0, 0, 766, 528);
 		frmProvinciasArgentinas.getContentPane().add(lblBandera);
+		
+		mapa = new Mapa();
 
 		detectarCoordenadas();
 		//dibujarPoligono();
@@ -143,8 +148,12 @@ public class MainForm
 				if (nombre != null && !nombre.isEmpty()) {
 					_lasCoordenadas.add(markeradd);
 					_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
-					comboBox_Provincia1.addItem(nombre); // Agregar provincia a la lista desplegable
 					
+					mapa.agregarProvincia(nombre);
+
+					comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
+					comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
+
 				}
 			}}
 		});
