@@ -98,9 +98,6 @@ public class Mapa {
     public Set<String> obtenerProvincias() {
         return provincias.keySet();
     }
-<<<<<<< HEAD
 
 	
-=======
->>>>>>> main
 }
