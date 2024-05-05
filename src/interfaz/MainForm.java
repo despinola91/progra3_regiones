@@ -206,14 +206,16 @@ public class MainForm
 	    comboBox_Algoritmo.setBounds(133, 97, 138, 22);
 	    panelControlRegiones.add(comboBox_Algoritmo);
 	    
+	    //Logica del Boton Crear Regiones
 		JButton btnCrearRegiones = new JButton("Crear Regiones");
 		btnCrearRegiones.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        String input = JOptionPane.showInputDialog("En cuantas Regiones desea dividir?");
+		        String input = textCantidadRegiones.getText();
 		        try {
 		            int numRegiones = Integer.parseInt(input);
 		            if (numRegiones > 0) {
-		                System.out.println("Numero de regiones: " + numRegiones); //De prueba, despues lo eliminamos
+		                System.out.println("Numero de regiones: " + numRegiones);
+		                // Aca vamos a hacer la llamada a dividir el arbol
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
 		            }
