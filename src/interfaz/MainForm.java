@@ -272,8 +272,12 @@ public class MainForm
 	            try {
 	                int similitud = Integer.parseInt(similitudText);
 	                if (similitud > 0) {
-	                    mapa.agregarRelacion(provincia1, provincia2, similitud);
-	                    JOptionPane.showMessageDialog(null, "La relacion ha sido cargada", "Relacion Cargada", JOptionPane.INFORMATION_MESSAGE);
+	                    if (!provincia1.equals(provincia2)) {
+	                        mapa.agregarRelacion(provincia1, provincia2, similitud);
+	                        JOptionPane.showMessageDialog(null, "La relacion ha sido cargada", "Relacion Cargada", JOptionPane.INFORMATION_MESSAGE);
+	                    } else {
+	                        JOptionPane.showMessageDialog(null, "Las dos provincias seleccionadas son iguales, por favor seleccione provincias diferentes.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    }
 	                } else {
 	                    JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
 	                }
