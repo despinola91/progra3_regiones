@@ -124,8 +124,8 @@ public class MainForm
 		mapa = new Mapa();
 
 		detectarCoordenadas();
-		//dibujarPoligono();
-		//eliminarPoligono();		
+		dibujarPoligono();
+		eliminarPoligono();		
 		cargarRelaciones();
 		dividirRegiones();
 	}
@@ -162,7 +162,7 @@ public class MainForm
 	private void dibujarPoligono()  //va dibujando el grafo con las provincias agregadas en el mapa
 	{
 		btnDibujarPolgono = new JButton("Dibujar Grafo");
-		btnDibujarPolgono.setBounds(61, 26, 195, 23);
+		btnDibujarPolgono.setBounds(18, 218, 123, 23);
 		btnDibujarPolgono.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -184,7 +184,7 @@ public class MainForm
 				 _mapa.removeMapPolygon(_poligono);
 			}
 		});
-		btnEliminar.setBounds(61, 77, 195, 23);
+		btnEliminar.setBounds(149, 218, 128, 23);
 		panelControlRelaciones.add(btnEliminar);
 		panelControlRelaciones.add(btnDibujarPolgono);		
 	}
@@ -286,7 +286,7 @@ public class MainForm
 	            }
 	        }
 	    });
-	    btnCrearRelacion.setBounds(25, 183, 136, 23);
+	    btnCrearRelacion.setBounds(25, 173, 136, 23);
 	    panelControlRelaciones.add(btnCrearRelacion);
 	    
 	    JLabel lblTituloRelaciones = new JLabel("Creacion de relaciones");
