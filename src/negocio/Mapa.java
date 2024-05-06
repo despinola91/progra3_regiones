@@ -1,7 +1,8 @@
 package negocio;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Set;
 
 public class Mapa {
 
@@ -95,7 +96,11 @@ public class Mapa {
         return matrizDeRelacion.length;
     }
 
-    public Set<String> obtenerProvincias() {
-        return provincias.keySet();
+    public ArrayList<String> obtenerProvincias() {
+        ArrayList<String> listaProvincias = new ArrayList<>();
+        listaProvincias.addAll(provincias.keySet());
+        Collections.sort(listaProvincias);
+        
+        return listaProvincias;
     }
 }

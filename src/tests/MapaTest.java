@@ -2,8 +2,7 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -70,14 +69,19 @@ class MapaTest {
 	void obtenerProvinciasTest() {
 		Mapa mapa = new Mapa();
 
+		mapa.agregarProvincia("Salta");
+		mapa.agregarProvincia("Tucuman");
+		mapa.agregarProvincia("Catamarca");
 		mapa.agregarProvincia("Buenos Aires");
-		mapa.agregarProvincia("Catamarca");		
 
-		Set<String> provinciasResultado = mapa.obtenerProvincias();
+		ArrayList<String> provinciasResultado = mapa.obtenerProvincias();
 
-		Set<String> provinciasEsperadas = new HashSet<String>();
+		ArrayList<String> provinciasEsperadas = new ArrayList<>();
         provinciasEsperadas.add("Buenos Aires");
 		provinciasEsperadas.add("Catamarca");
+		provinciasEsperadas.add("Salta");
+		provinciasEsperadas.add("Tucuman");
+
 
  		assertTrue(provinciasEsperadas.equals(provinciasResultado));
 	}
