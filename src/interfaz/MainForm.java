@@ -265,8 +265,22 @@ public class MainForm
 	    
 	    JButton btnCrearRelacion = new JButton("Crear Relacion");
 	    btnCrearRelacion.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    	}
+	        public void actionPerformed(ActionEvent e) {
+	            String provincia1 = comboBox_Provincia1.getSelectedItem().toString();
+	            String provincia2 = comboBox_Provincia2.getSelectedItem().toString();
+	            String similitudText = textSimilitud.getText();
+	            try {
+	                int similitud = Integer.parseInt(similitudText);
+	                if (similitud > 0) {
+	                    mapa.agregarRelacion(provincia1, provincia2, similitud);
+	                    JOptionPane.showMessageDialog(null, "La relacion ha sido cargada", "Relacion Cargada", JOptionPane.INFORMATION_MESSAGE);
+	                } else {
+	                    JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
+	                }
+	            } catch (NumberFormatException ex) {
+	                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        }
 	    });
 	    btnCrearRelacion.setBounds(25, 183, 136, 23);
 	    panelControlRelaciones.add(btnCrearRelacion);
