@@ -104,5 +104,15 @@ public class Mapa {
         return listaProvincias;
     }
 
-	
+    public int[][] obtenerRegiones(int cantidadRegiones, String algoritmo) {
+        int[][] regiones = new int[provincias.size()][provincias.size()];
+        if (algoritmo == "Prim") {
+            regiones = Prim.obtenerRegiones(matrizDeRelacion, cantidadRegiones);
+        }
+        else if (algoritmo == "Kruskal") {
+            regiones = Kruskal.obtenerRegiones(matrizDeRelacion, cantidadRegiones);
+        }
+        
+        return regiones;
+    }
 }
