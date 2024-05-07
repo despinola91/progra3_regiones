@@ -111,6 +111,9 @@ public class Mapa {
         }
         else if (algoritmo == "Kruskal") {
             regiones = Kruskal.obtenerRegiones(matrizDeRelacion, cantidadRegiones);
+        } 
+        else {
+            throw new IllegalArgumentException("El algoritmo seleccionado no es válido.");
         }
         
         return regiones;
