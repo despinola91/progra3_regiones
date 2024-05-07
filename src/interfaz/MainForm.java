@@ -152,7 +152,7 @@ public class MainForm
 					_lasCoordenadas.add(markeradd);
 					_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
 					
-					mapa.agregarProvincia(nombre);
+					mapa.agregarProvincia(nombre, markeradd.getLat(), markeradd.getLon());
 
 					comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 					comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));

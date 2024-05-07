@@ -6,8 +6,7 @@ import java.util.HashMap;
 
 public class Mapa {
 
-    private HashMap<String, Integer> provincias = new HashMap<>();
-    //private static int cantidadProvincias = 0;
+    private HashMap<String, Provincia> provincias = new HashMap<>();
     private int[][] matrizDeRelacion;
     
     public Mapa()
@@ -19,8 +18,11 @@ public class Mapa {
 	{
 		validarRelacion(nombreProvincia1, nombreProvincia2);
 
-        matrizDeRelacion[provincias.get(nombreProvincia1)][provincias.get(nombreProvincia2)] = similitud;
-        matrizDeRelacion[provincias.get(nombreProvincia2)][provincias.get(nombreProvincia1)] = similitud;
+        int idProv1 = provincias.get(nombreProvincia1).obtenerId();
+        int idProv2 = provincias.get(nombreProvincia2).obtenerId();
+
+        matrizDeRelacion[idProv1][idProv2] = similitud;
+        matrizDeRelacion[idProv2][idProv1] = similitud;
         
 	}
 
@@ -30,8 +32,11 @@ public class Mapa {
 		validarProvincia(nombreProvincia2);
 		validarRelacion(nombreProvincia1, nombreProvincia2);
 
-		matrizDeRelacion[provincias.get(nombreProvincia1)][provincias.get(nombreProvincia2)] = 0;
-        matrizDeRelacion[provincias.get(nombreProvincia2)][provincias.get(nombreProvincia1)] = 0;
+        int idProv1 = provincias.get(nombreProvincia1).obtenerId();
+        int idProv2 = provincias.get(nombreProvincia2).obtenerId();
+
+		matrizDeRelacion[idProv1][idProv2] = 0;
+        matrizDeRelacion[idProv2][idProv1] = 0;
 	}
 
     private void validarRelacion (String nombreProvincia1, String nombreProvincia2) {
@@ -46,11 +51,15 @@ public class Mapa {
 		validarProvincia(nombreProvincia2);
 		validarRelacion(nombreProvincia1, nombreProvincia2);
 
-		return matrizDeRelacion[provincias.get(nombreProvincia1)][provincias.get(nombreProvincia2)] > 0;
+        int idProv1 = provincias.get(nombreProvincia1).obtenerId();
+        int idProv2 = provincias.get(nombreProvincia2).obtenerId();
+
+		return matrizDeRelacion[idProv1][idProv2] > 0;
 	}
 
-    public void agregarProvincia (String nombreProvincia) {
-        provincias.put(nombreProvincia, provincias.size());
+    public void agregarProvincia (String nombreProvincia, double latitud, double longitud) {
+        Provincia provincia = new Provincia(provincias.size(), nombreProvincia, latitud, longitud);
+        provincias.put(nombreProvincia, provincia);
 
         int tamanioActual = matrizDeRelacion.length;
         int nuevoTamanio = matrizDeRelacion.length + 1;
@@ -96,6 +105,11 @@ public class Mapa {
         return matrizDeRelacion.length;
     }
 
+    public Provincia obtenerProvincia(String nombreProvincia) {
+        Provincia provincia = provincias.get(nombreProvincia);
+        return provincia;
+    }
+    
     public ArrayList<String> obtenerProvincias() {
         ArrayList<String> listaProvincias = new ArrayList<>();
         listaProvincias.addAll(provincias.keySet());
