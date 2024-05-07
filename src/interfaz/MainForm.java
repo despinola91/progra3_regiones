@@ -230,17 +230,10 @@ public class MainForm
 		            if (numRegiones > 0) {
 		                System.out.println("Numero de regiones: " + numRegiones);
 		             // Obtener la opción seleccionada en el comboBox
-		                String seleccion = (String) comboBox_Algoritmo.getSelectedItem();
+		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
 
-		                // Verificar qué opción se ha seleccionado
-		                if (seleccion.equals("Prim")) {
-		                    Prim.crearAlgoritmoPrim();
-		                } else if (seleccion.equals("Kruskal")) {
-		                    Kruskal.crearAlgoritmoKruskal();
-		                }
-
-		                // Llamar al método para dividir regiones y pasar numRegiones como parámetro
-		                Regiones.dividirRegiones(numRegiones);
+		                // Se obtienen las regiones aplicando el algoritmo seleccionado
+						int[][] regiones = mapa.obtenerRegiones(numRegiones, algoritmo);
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
