@@ -213,6 +213,9 @@ public class MainForm
 	    comboBox_Algoritmo.setToolTipText("");
 	    comboBox_Algoritmo.setBounds(133, 97, 138, 22);
 	    panelControlRegiones.add(comboBox_Algoritmo);
+	    comboBox_Algoritmo.addItem("Prim");
+	    comboBox_Algoritmo.addItem("Kruskal");
+	    
 	    
 	    //Logica del Boton Crear Regiones
 		JButton btnCrearRegiones = new JButton("Crear Regiones");
