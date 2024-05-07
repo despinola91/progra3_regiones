@@ -11,7 +11,9 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
+import negocio.Kruskal;
 import negocio.Mapa;
+import negocio.Prim;
 
 import javax.swing.JButton;
 
@@ -216,6 +218,21 @@ public class MainForm
 	    comboBox_Algoritmo.addItem("Prim");
 	    comboBox_Algoritmo.addItem("Kruskal");
 	    
+	 // Agregar un ActionListener a la lista desplegable
+	    comboBox_Algoritmo.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            String seleccion = (String) comboBox_Algoritmo.getSelectedItem();
+	            
+	            // Verificar qué opción se ha seleccionado
+	            if (seleccion.equals("Prim")) {
+	                // Llamar al método crearAlgoritmoPrim de la clase Prim
+	                Prim.crearAlgoritmoPrim();
+	            } else if (seleccion.equals("Kruskal")) {
+	                // Llamar al método correspondiente de la clase Kruskal
+	                Kruskal.crearAlgoritmoKruskal();
+	            }
+	        }
+	    });
 	    
 	    //Logica del Boton Crear Regiones
 		JButton btnCrearRegiones = new JButton("Crear Regiones");
