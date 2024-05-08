@@ -120,4 +120,19 @@ class MapaTest {
 		assertTrue(provincia.obtenerLongitud() == 60);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerProvinciaPorId(1));
 	}	
+
+	@Test
+	void obtenerMatrizRelacionTest() {
+
+		Mapa mapa = new Mapa();
+		mapa.agregarProvincia("Buenos Aires", -43, 64);
+		mapa.agregarProvincia("Santa Fe", 87, -93);
+		mapa.agregarProvincia("Chaco", 37, -73);
+
+		mapa.agregarRelacion("Buenos Aires", "Santa Fe", 5);
+		int[][] expectedMatrix = {{0, 5, 0}, 
+								  {5, 0, 0},
+								  {0, 0, 0}};
+		assertArrayEquals(expectedMatrix, mapa.obtenerMatrizRelacion());
+	}
 }
