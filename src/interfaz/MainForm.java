@@ -128,9 +128,7 @@ public class MainForm
 		
 		mapa = new Mapa();
 
-		detectarCoordenadas();
-		dibujarPoligono();
-		eliminarPoligono();		
+		detectarCoordenadas();	
 		cargarRelaciones();
 		dividirRegiones();
 	}
@@ -217,35 +215,35 @@ public class MainForm
 	    }
 	}
 
-	private void dibujarPoligono()  //va dibujando el grafo con las provincias agregadas en el mapa
-	{
-		btnDibujarPolgono = new JButton("Dibujar Grafo");
-		btnDibujarPolgono.setBounds(18, 218, 123, 23);
-		btnDibujarPolgono.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				_poligono = new MapPolygonImpl(_lasCoordenadas);
-				_mapa.addMapPolygon(_poligono);
-				
-			}
-		});
-	}
-
-	private void eliminarPoligono() 
-	{
-		btnEliminar = new JButton("Eliminar Grafo");
-		btnEliminar.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				 _mapa.removeMapPolygon(_poligono);
-			}
-		});
-		btnEliminar.setBounds(149, 218, 128, 23);
-		panelControlRelaciones.add(btnEliminar);
-		panelControlRelaciones.add(btnDibujarPolgono);		
-	}
+//	private void dibujarPoligono()  //va dibujando el grafo con las provincias agregadas en el mapa
+//	{
+//		btnDibujarPolgono = new JButton("Dibujar Grafo");
+//		btnDibujarPolgono.setBounds(18, 218, 123, 23);
+//		btnDibujarPolgono.addActionListener(new ActionListener() 
+//		{
+//			public void actionPerformed(ActionEvent arg0) 
+//			{
+//				_poligono = new MapPolygonImpl(_lasCoordenadas);
+//				_mapa.addMapPolygon(_poligono);
+//				
+//			}
+//		});
+//	}
+//
+//	private void eliminarPoligono() 
+//	{
+//		btnEliminar = new JButton("Eliminar Grafo");
+//		btnEliminar.addActionListener(new ActionListener() 
+//		{
+//			public void actionPerformed(ActionEvent arg0) 
+//			{
+//				 _mapa.removeMapPolygon(_poligono);
+//			}
+//		});
+//		btnEliminar.setBounds(149, 218, 128, 23);
+//		panelControlRelaciones.add(btnEliminar);
+//		panelControlRelaciones.add(btnDibujarPolgono);		
+//	}
 	
 	
 	private void dividirRegiones() {
@@ -310,11 +308,11 @@ public class MainForm
 	    panelControlRelaciones.add(comboBox_Provincia1);
 	    
 	    comboBox_Provincia2 = new JComboBox();
-	    comboBox_Provincia2.setBounds(133, 77, 138, 22);
+	    comboBox_Provincia2.setBounds(133, 80, 138, 22);
 	    panelControlRelaciones.add(comboBox_Provincia2);
 	    
 	    JTextPane textSimilitud = new JTextPane();
-	    textSimilitud.setBounds(133, 125, 62, 22);
+	    textSimilitud.setBounds(133, 130, 62, 22);
 	    panelControlRelaciones.add(textSimilitud);
 	    
 	    JLabel lblProvincia1 = new JLabel("Provincia 1");
@@ -322,11 +320,11 @@ public class MainForm
 	    panelControlRelaciones.add(lblProvincia1);
 	    
 	    JLabel lblProvincia2 = new JLabel("Provincia 2");
-	    lblProvincia2.setBounds(25, 78, 77, 23);
+	    lblProvincia2.setBounds(25, 80, 77, 23);
 	    panelControlRelaciones.add(lblProvincia2);
 	    
 	    JLabel lblSimilitud = new JLabel("Similitud");
-	    lblSimilitud.setBounds(25, 125, 77, 23);
+	    lblSimilitud.setBounds(25, 130, 77, 23);
 	    panelControlRelaciones.add(lblSimilitud);
 	    
 	    JButton btnCrearRelacion = new JButton("Crear Relacion");
@@ -354,7 +352,7 @@ public class MainForm
 	            }
 	        }
 	    });
-	    btnCrearRelacion.setBounds(25, 173, 136, 23);
+	    btnCrearRelacion.setBounds(9, 185, 134, 23);
 	    panelControlRelaciones.add(btnCrearRelacion);
 	    
 	    
@@ -370,7 +368,7 @@ public class MainForm
 	            JOptionPane.showMessageDialog(null, "La relacion ha sido eliminada", "Relacion Eliminada", JOptionPane.INFORMATION_MESSAGE);
 	        }
 	    });
-	    btnEliminarRelacion.setBounds(171, 173, 136, 23);
+	    btnEliminarRelacion.setBounds(155, 185, 134, 23);
 	    panelControlRelaciones.add(btnEliminarRelacion);
 
 	    
