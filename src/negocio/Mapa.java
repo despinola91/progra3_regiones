@@ -132,4 +132,19 @@ public class Mapa {
         
         return regiones;
     }
+
+    public Provincia obtenerProvinciaPorNombre(String nombreProvincia) {
+        return provincias.get(nombreProvincia);
+    }
+
+    public Provincia obtenerProvinciaPorId(int id) {
+        
+        for (Provincia provincia : provincias.values()) {
+            if (provincia.obtenerId() == id) {
+                return provincia;
+            }
+        }
+
+        throw new IllegalArgumentException("Provincia not found for id: " + id);
+    }
 }
