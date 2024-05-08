@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import negocio.Mapa;
+import negocio.Provincia;
 
 class MapaTest {
 
@@ -91,5 +92,47 @@ class MapaTest {
 		Mapa mapa = new Mapa();
 		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "kruskal"));
 		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "prim"));
+	}
+
+	@Test
+	void obtenerProvinciaporNombreTest() {
+	
+		Mapa mapa = new Mapa();
+		mapa.agregarProvincia("Buenos Aires", 50, 60);
+		Provincia provincia = mapa.obtenerProvinciaPorNombre("Buenos Aires");
+		
+		assertTrue(provincia.obtenerId() ==0);
+		assertTrue(provincia.obtenerNombre() == "Buenos Aires");
+		assertTrue(provincia.obtenerLatitud() == 50);
+		assertTrue(provincia.obtenerLongitud() == 60);
+	}
+
+	@Test
+	void obtenerProvinciaporIdTest() {
+	
+		Mapa mapa = new Mapa();
+		mapa.agregarProvincia("Buenos Aires", 50, 60);
+		Provincia provincia = mapa.obtenerProvinciaPorId(0);
+
+		assertTrue(provincia.obtenerId() ==0);
+		assertTrue(provincia.obtenerNombre() == "Buenos Aires");
+		assertTrue(provincia.obtenerLatitud() == 50);
+		assertTrue(provincia.obtenerLongitud() == 60);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerProvinciaPorId(1));
+	}	
+
+	@Test
+	void obtenerMatrizRelacionTest() {
+
+		Mapa mapa = new Mapa();
+		mapa.agregarProvincia("Buenos Aires", -43, 64);
+		mapa.agregarProvincia("Santa Fe", 87, -93);
+		mapa.agregarProvincia("Chaco", 37, -73);
+
+		mapa.agregarRelacion("Buenos Aires", "Santa Fe", 5);
+		int[][] expectedMatrix = {{0, 5, 0}, 
+								  {5, 0, 0},
+								  {0, 0, 0}};
+		assertArrayEquals(expectedMatrix, mapa.obtenerMatrizRelacion());
 	}
 }

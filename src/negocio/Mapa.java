@@ -118,6 +118,21 @@ public class Mapa {
         return listaProvincias;
     }
 
+    public Provincia obtenerProvinciaPorNombre(String nombreProvincia) {
+        return provincias.get(nombreProvincia);
+    }
+
+    public Provincia obtenerProvinciaPorId(int id) {
+        
+        for (Provincia provincia : provincias.values()) {
+            if (provincia.obtenerId() == id) {
+                return provincia;
+            }
+        }
+
+        throw new IllegalArgumentException("Provincia not found for id: " + id);
+    }
+
     public int[][] obtenerRegiones(int cantidadRegiones, String algoritmo) {
         int[][] regiones = new int[provincias.size()][provincias.size()];
         if (algoritmo == "Prim") {
@@ -131,5 +146,9 @@ public class Mapa {
         }
         
         return regiones;
+    }
+
+    public int[][] obtenerMatrizRelacion() {
+        return matrizDeRelacion;
     }
 }
