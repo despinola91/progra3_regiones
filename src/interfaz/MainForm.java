@@ -14,6 +14,7 @@ import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import negocio.Kruskal;
 import negocio.Mapa;
 import negocio.Prim;
+import negocio.Provincia;
 import negocio.Regiones;
 
 import javax.swing.JButton;
@@ -45,6 +46,7 @@ public class MainForm
 	private JPanel panelControlRelaciones;
 	private JMapViewer _mapa;
 	private ArrayList<Coordinate> _lasCoordenadas;
+	private ArrayList<ArrayList<Coordinate>> aristas = new ArrayList<>();
 	private JButton btnEliminar;
 	private MapPolygonImpl _poligono;
 	private JButton btnDibujarPolgono ;
@@ -160,6 +162,59 @@ public class MainForm
 				}
 			}}
 		});
+	}
+	
+	private void dibujarArista(String nombreProvincia1, String nombreProvincia2) {
+	    ArrayList<Coordinate> coordenadasProvinciaActual = new ArrayList<>();
+	    
+	    Provincia provincia1 = mapa.obtenerProvincia(nombreProvincia1);
+	    Provincia provincia2 = mapa.obtenerProvincia(nombreProvincia2);
+	    
+	    coordenadasProvinciaActual.add(new Coordinate(provincia1.obtenerLatitud(), provincia1.obtenerLongitud()));
+	    coordenadasProvinciaActual.add(new Coordinate(provincia2.obtenerLatitud(), provincia2.obtenerLongitud()));
+	    coordenadasProvinciaActual.add(new Coordinate(provincia1.obtenerLatitud(), provincia1.obtenerLongitud()));
+	    
+	    aristas.add(coordenadasProvinciaActual);
+	    
+	    for (ArrayList<Coordinate> arista : aristas) {
+	        MapPolygonImpl aristaMapa = new MapPolygonImpl(arista);
+	        _mapa.addMapPolygon(aristaMapa);
+	    }
+	}
+
+	/**El metodo chequea las aristas que no se van a aliminar y las pone en una lista temporal, luego elimina todas las aristas,
+	y vuelve a dibujarlas pero sin la arista que se desea eliminar**/
+	private void eliminarArista(String nombreProvincia1, String nombreProvincia2) {
+	    //lista temporal para almacenar las aristas que no se van a eliminar
+	    ArrayList<ArrayList<Coordinate>> nuevasAristas = new ArrayList<>();
+	    
+	    //Recorro todas las aristas existentes
+	    for (ArrayList<Coordinate> arista : aristas) {
+	        //coordenadas de los puntos de inicio y fin de la arista actual
+	        Coordinate coordInicio = arista.get(0);
+	        Coordinate coordFin = arista.get(1);
+	        
+	        //Verifico si la arista actual no corresponde a la conexión que se desea eliminar ida y vuelta
+	        if (!((coordInicio.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia1).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia1).obtenerLongitud())) &&
+	               coordFin.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia2).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia2).obtenerLongitud()))) ||
+	              ((coordInicio.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia2).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia2).obtenerLongitud()))) &&
+	               coordFin.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia1).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia1).obtenerLongitud()))))) {
+	            //Si no corresponde agrega a la lista de aristas que no se van a eliminar
+	            nuevasAristas.add(arista);
+	        }
+	    }
+	    
+	    //actualizo la lista de aristas con las aristas restantes
+	    aristas = nuevasAristas;
+	    
+	    //limpio el mapa para eliminar todas las aristas dibujadas
+	    _mapa.removeAllMapPolygons();
+	    
+	    //dibujo las aristas restantes en el mapa
+	    for (ArrayList<Coordinate> arista : aristas) {
+	        MapPolygonImpl aristaMapa = new MapPolygonImpl(arista);
+	        _mapa.addMapPolygon(aristaMapa);
+	    }
 	}
 
 	private void dibujarPoligono()  //va dibujando el grafo con las provincias agregadas en el mapa
@@ -277,14 +332,16 @@ public class MainForm
 	    JButton btnCrearRelacion = new JButton("Crear Relacion");
 	    btnCrearRelacion.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
-	            String provincia1 = comboBox_Provincia1.getSelectedItem().toString();
-	            String provincia2 = comboBox_Provincia2.getSelectedItem().toString();
+	            String nombreProvincia1 = comboBox_Provincia1.getSelectedItem().toString();	            
+	            String nombreProvincia2 = comboBox_Provincia2.getSelectedItem().toString();
+				
 	            String similitudText = textSimilitud.getText();
 	            try {
 	                int similitud = Integer.parseInt(similitudText);
 	                if (similitud > 0) {
-	                    if (!provincia1.equals(provincia2)) {
-	                        mapa.agregarRelacion(provincia1, provincia2, similitud);
+	                    if (!nombreProvincia1.equals(nombreProvincia2)) {
+	                        mapa.agregarRelacion(nombreProvincia1, nombreProvincia2, similitud);
+	                        dibujarArista(nombreProvincia1,nombreProvincia2);
 	                        JOptionPane.showMessageDialog(null, "La relacion ha sido cargada", "Relacion Cargada", JOptionPane.INFORMATION_MESSAGE);
 	                    } else {
 	                        JOptionPane.showMessageDialog(null, "Las dos provincias seleccionadas son iguales, por favor seleccione provincias diferentes.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -299,6 +356,24 @@ public class MainForm
 	    });
 	    btnCrearRelacion.setBounds(25, 173, 136, 23);
 	    panelControlRelaciones.add(btnCrearRelacion);
+	    
+	    
+	    
+	    JButton btnEliminarRelacion = new JButton("Eliminar Relacion");
+	    btnEliminarRelacion.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            String nombreProvincia1 = comboBox_Provincia1.getSelectedItem().toString();            
+	            String nombreProvincia2 = comboBox_Provincia2.getSelectedItem().toString();
+	            
+	            eliminarArista(nombreProvincia1, nombreProvincia2);
+	            
+	            JOptionPane.showMessageDialog(null, "La relacion ha sido eliminada", "Relacion Eliminada", JOptionPane.INFORMATION_MESSAGE);
+	        }
+	    });
+	    btnEliminarRelacion.setBounds(171, 173, 136, 23);
+	    panelControlRelaciones.add(btnEliminarRelacion);
+
+	    
 	    
 	    JLabel lblTituloRelaciones = new JLabel("Creacion de relaciones");
 	    lblTituloRelaciones.setFont(new Font("Tahoma", Font.ITALIC, 16));
