@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import org.openstreetmap.gui.jmapviewer.Coordinate;
+
 public class Mapa {
 
     private HashMap<String, Provincia> provincias = new HashMap<>();
@@ -57,8 +59,8 @@ public class Mapa {
 		return matrizDeRelacion[idProv1][idProv2] > 0;
 	}
 
-    public void agregarProvincia (String nombreProvincia, double latitud, double longitud) {
-        Provincia provincia = new Provincia(provincias.size(), nombreProvincia, latitud, longitud);
+    public void agregarProvincia (String nombreProvincia, Coordinate coordenadas) {
+        Provincia provincia = new Provincia(provincias.size(), nombreProvincia, coordenadas);
         provincias.put(nombreProvincia, provincia);
 
         int tamanioActual = matrizDeRelacion.length;
