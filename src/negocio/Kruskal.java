@@ -7,7 +7,7 @@ public class Kruskal {
 		
 	}
 
-    public static int[][] obtenerRegiones(int[][] matrizDeRelacion, int cantidadRegiones) {
+    public static int[][] generarAGM(int[][] matrizDeRelacion) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'obtenerRegiones'");
     }

@@ -194,7 +194,8 @@ public class MainForm
 		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
 
 		                // Se obtienen las regiones aplicando el algoritmo seleccionado
-						int[][] regiones = mapa.obtenerRegiones(numRegiones, algoritmo);
+						mapa.generarRegiones(numRegiones, algoritmo);
+						dibujarMapa(mapa.obtenerRegiones());
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);

@@ -10,6 +10,7 @@ public class Mapa {
 
     private HashMap<String, Provincia> provincias = new HashMap<>();
     private int[][] matrizDeRelacion;
+    private int[][] matrizDeRegiones;
     
     public Mapa()
 	{
@@ -135,22 +136,36 @@ public class Mapa {
         throw new IllegalArgumentException("Provincia not found for id: " + id);
     }
 
-    public int[][] obtenerRegiones(int cantidadRegiones, String algoritmo) {
-        int[][] regiones = new int[provincias.size()][provincias.size()];
+    public void generarRegiones(int cantidadRegiones, String algoritmo) {
+        matrizDeRegiones = new int[provincias.size()][provincias.size()];
         if (algoritmo == "Prim") {
-            regiones = Prim.obtenerRegiones(matrizDeRelacion, cantidadRegiones);
+            matrizDeRegiones = Prim.generarAGM(matrizDeRelacion);
         }
         else if (algoritmo == "Kruskal") {
-            regiones = Kruskal.obtenerRegiones(matrizDeRelacion, cantidadRegiones);
+            matrizDeRegiones = Kruskal.generarAGM(matrizDeRelacion);
         } 
         else {
             throw new IllegalArgumentException("El algoritmo seleccionado no es válido.");
         }
-        
-        return regiones;
+
+        matrizDeRegiones = dividirRegiones(matrizDeRegiones, cantidadRegiones);
+    }
+    
+    public int[][] obtenerRegiones() {
+        return matrizDeRegiones;
     }
 
     public int[][] obtenerMatrizRelacion() {
         return matrizDeRelacion;
+    }
+
+    private int[][] dividirRegiones(int[][] matrizRegiones, int cantidadRegiones) {
+        for (int i = 0; i < matrizRegiones.length; i++) {
+            for (int j = 0; j < matrizRegiones.length; j++) {
+                
+            }
+        }
+        
+        return matrizRegiones;
     }
 }

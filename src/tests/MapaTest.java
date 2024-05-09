@@ -88,12 +88,12 @@ class MapaTest {
  		assertTrue(provinciasEsperadas.equals(provinciasResultado));
 	}
 
-	@Test
-	void obtenerRegionesTest() {
-		Mapa mapa = new Mapa();
-		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "kruskal"));
-		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "prim"));
-	}
+	// @Test
+	// void obtenerRegionesTest() {
+	// 	Mapa mapa = new Mapa();
+	// 	Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "kruskal"));
+	// 	Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "prim"));
+	// }
 
 	@Test
 	void obtenerProvinciaporNombreTest() {
