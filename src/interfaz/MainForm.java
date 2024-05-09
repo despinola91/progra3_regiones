@@ -297,7 +297,7 @@ public class MainForm
 		
 		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
 		for (int i = 0; i < matrizDeRelacion.length; i++) {
-			for (int j = i+1; j < matrizDeRelacion.length; j++) {  //se cambia para evitar dibujar las aristas repetidas
+			for (int j = 0; j < matrizDeRelacion.length; j++) {  
 				if (matrizDeRelacion[i][j] > 0) {
 					dibujarArista(mapa.obtenerProvinciaPorId(i).obtenerCoordenadas(), mapa.obtenerProvinciaPorId(j).obtenerCoordenadas());
 				}
