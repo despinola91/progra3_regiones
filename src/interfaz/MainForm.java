@@ -15,7 +15,6 @@ import negocio.Kruskal;
 import negocio.Mapa;
 import negocio.Prim;
 import negocio.Provincia;
-import negocio.Regiones;
 
 import javax.swing.JButton;
 
@@ -369,7 +368,7 @@ public class MainForm
 	            JOptionPane.showMessageDialog(null, "La relacion ha sido eliminada", "Relacion Eliminada", JOptionPane.INFORMATION_MESSAGE);
 	        }
 	    });
-	    btnEliminarRelacion.setBounds(155, 185, 134, 23);
+	    btnEliminarRelacion.setBounds(151, 185, 138, 23);
 	    panelControlRelaciones.add(btnEliminarRelacion);
 
 	    
