@@ -194,7 +194,7 @@ public class MainForm
 		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
 
 		             // Se llama al método para dividir en regiones y obtener la matriz resultante
-		                int[][] regiones = Mapa.obtenerRegiones(numRegiones, algoritmo);
+		                int[][] regiones = mapa.obtenerRegiones(numRegiones, algoritmo);
 		                
 		                // Iterar sobre la matriz de regiones y agregar marcadores al mapa
 		               /* for (int i = 0; i < regiones.length; i++) {
