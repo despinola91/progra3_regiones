@@ -197,20 +197,15 @@ public class MainForm
 		                int[][] regiones = Mapa.obtenerRegiones(numRegiones, algoritmo);
 		                
 		                // Iterar sobre la matriz de regiones y agregar marcadores al mapa
-		                for (int i = 0; i < regiones.length; i++) {
+		               /* for (int i = 0; i < regiones.length; i++) {
 		                    Coordinate coordenada = new Coordinate(regiones[i][0], regiones[i][1]);
 		                    String nombreRegion = "Región " + (i + 1); // Nombre de la región
 		                    _mapa.addMapMarker(new MapMarkerDot(nombreRegion, coordenada));
-		                }
+		                }*/
 		                
 		             // Dibujar relaciones entre las provincias de cada región
-		                for (int i = 0; i < regiones.length; i++) {
-		                    for (int j = 0; j < regiones[i].length; j++) {
-		                        for (int k = j + 1; k < regiones[i].length; k++) {
-		                            dibujarArista(mapa.obtenerProvinciaPorId(regiones[i][j]).obtenerCoordenadas(), mapa.obtenerProvinciaPorId(regiones[i][k]).obtenerCoordenadas());
-		                        }
-		                    }
-		                }
+		                // Dibujar relaciones entre las provincias de cada región
+		                dibujarMapa(regiones);
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
@@ -302,7 +297,7 @@ public class MainForm
 		
 		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
 		for (int i = 0; i < matrizDeRelacion.length; i++) {
-			for (int j = 0; j < matrizDeRelacion.length; j++) {
+			for (int j = i+1; j < matrizDeRelacion.length; j++) {  //se cambia para evitar dibujar las aristas repetidas
 				if (matrizDeRelacion[i][j] > 0) {
 					dibujarArista(mapa.obtenerProvinciaPorId(i).obtenerCoordenadas(), mapa.obtenerProvinciaPorId(j).obtenerCoordenadas());
 				}
