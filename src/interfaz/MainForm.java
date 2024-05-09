@@ -134,7 +134,7 @@ public class MainForm
 				if (nombre != null && !nombre.isEmpty()) {
 					_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
 					mapa.agregarProvincia(nombre, coordenadas);
-
+					
 					comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 					comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 
@@ -262,15 +262,12 @@ public class MainForm
 	    btnCrearRelacion.setBounds(9, 185, 134, 23);
 	    panelControlRelaciones.add(btnCrearRelacion);
 	    
-	    
-	    
 	    JButton btnEliminarRelacion = new JButton("Eliminar Relacion");
 	    btnEliminarRelacion.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            String nombreProvincia1 = comboBox_Provincia1.getSelectedItem().toString();            
 	            String nombreProvincia2 = comboBox_Provincia2.getSelectedItem().toString();
 	            
-	            //eliminarArista(nombreProvincia1, nombreProvincia2);
 	            mapa.eliminarRelacion(nombreProvincia1, nombreProvincia2);
 				dibujarMapa(mapa.obtenerMatrizRelacion());
 
@@ -278,8 +275,6 @@ public class MainForm
 	    });
 	    btnEliminarRelacion.setBounds(151, 185, 138, 23);
 	    panelControlRelaciones.add(btnEliminarRelacion);
-
-	    
 	    
 	    JLabel lblTituloRelaciones = new JLabel("Creacion de relaciones");
 	    lblTituloRelaciones.setFont(new Font("Tahoma", Font.ITALIC, 16));
