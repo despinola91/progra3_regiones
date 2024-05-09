@@ -364,6 +364,7 @@ public class MainForm
 	            String nombreProvincia2 = comboBox_Provincia2.getSelectedItem().toString();
 	            
 	            eliminarArista(nombreProvincia1, nombreProvincia2);
+	            mapa.eliminarRelacion(nombreProvincia1, nombreProvincia2);
 	            
 	            JOptionPane.showMessageDialog(null, "La relacion ha sido eliminada", "Relacion Eliminada", JOptionPane.INFORMATION_MESSAGE);
 	        }
