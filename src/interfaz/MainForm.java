@@ -11,25 +11,16 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
-import negocio.Kruskal;
 import negocio.Mapa;
-import negocio.Prim;
-import negocio.Provincia;
-
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.awt.Point;
-import java.awt.Component;
 import java.awt.Dimension;
-import javax.swing.SwingConstants;
-import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
@@ -39,22 +30,17 @@ import java.awt.Font;
 
 public class MainForm 
 {
-
 	public JFrame frmProvinciasArgentinas;
+
 	private JPanel panelMapa;
 	private JPanel panelControlRelaciones;
-	private JMapViewer _mapa;
-	private ArrayList<Coordinate> _lasCoordenadas;
-	private ArrayList<ArrayList<Coordinate>> aristas = new ArrayList<>();
-	private JButton btnEliminar;
-	private MapPolygonImpl _poligono;
-	private JButton btnDibujarPolgono ;
+	private JPanel panelControlRegiones;
+
 	private JComboBox comboBox_Provincia2;
 	private JComboBox comboBox_Provincia1;
 	private JComboBox comboBox_Algoritmo;
-	
-	private JComboBox<String> comboBoxProvincias;
-	private JPanel panelControlRegiones;
+
+	private JMapViewer _mapa;
 	private JLabel lblBandera;
 	
 	private Mapa mapa;
@@ -133,26 +119,22 @@ public class MainForm
 	}
 	
 	private void detectarCoordenadas() 
-	{
-		_lasCoordenadas = new ArrayList<Coordinate>();
-				
+	{	
 		_mapa.addMouseListener(new MouseAdapter() 
 		{
+			@SuppressWarnings("unchecked")
 			@Override
 			public void mouseClicked(MouseEvent e) 
 			{
 			if (e.getButton() == MouseEvent.BUTTON1)
 			{
-				Coordinate markeradd = (Coordinate)
-				_mapa.getPosition(e.getPoint());
+				Coordinate coordenadas = (Coordinate)_mapa.getPosition(e.getPoint());
 				String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
-				//Agrega nombre a la lista
-				if (nombre != null && !nombre.isEmpty()) {
-					_lasCoordenadas.add(markeradd);
-					_mapa.addMapMarker(new MapMarkerDot(nombre, markeradd));//coloca en el mapa el nombre de la prov. tipeada por usuario
-					
-					mapa.agregarProvincia(nombre, markeradd.getLat(), markeradd.getLon());
 
+				if (nombre != null && !nombre.isEmpty()) {
+					_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
+					mapa.agregarProvincia(nombre, coordenadas);
+					
 					comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 					comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 
@@ -161,89 +143,16 @@ public class MainForm
 		});
 	}
 	
-	private void dibujarArista(String nombreProvincia1, String nombreProvincia2) {
-	    ArrayList<Coordinate> coordenadasProvinciaActual = new ArrayList<>();
+	private void dibujarArista(Coordinate coordenadaProv1, Coordinate coordenadaProv2) {
+	    ArrayList<Coordinate> listaCoordenadas = new ArrayList<>();
 	    
-	    Provincia provincia1 = mapa.obtenerProvincia(nombreProvincia1);
-	    Provincia provincia2 = mapa.obtenerProvincia(nombreProvincia2);
+	    listaCoordenadas.add(coordenadaProv1);
+	    listaCoordenadas.add(coordenadaProv2);
+	    listaCoordenadas.add(coordenadaProv1);
 	    
-	    coordenadasProvinciaActual.add(new Coordinate(provincia1.obtenerLatitud(), provincia1.obtenerLongitud()));
-	    coordenadasProvinciaActual.add(new Coordinate(provincia2.obtenerLatitud(), provincia2.obtenerLongitud()));
-	    coordenadasProvinciaActual.add(new Coordinate(provincia1.obtenerLatitud(), provincia1.obtenerLongitud()));
-	    
-	    aristas.add(coordenadasProvinciaActual);
-	    
-	    for (ArrayList<Coordinate> arista : aristas) {
-	        MapPolygonImpl aristaMapa = new MapPolygonImpl(arista);
-	        _mapa.addMapPolygon(aristaMapa);
-	    }
+		MapPolygonImpl relacion = new MapPolygonImpl(listaCoordenadas);
+	    _mapa.addMapPolygon(relacion);
 	}
-
-	/**El metodo chequea las aristas que no se van a aliminar y las pone en una lista temporal, luego elimina todas las aristas,
-	y vuelve a dibujarlas pero sin la arista que se desea eliminar**/
-	private void eliminarArista(String nombreProvincia1, String nombreProvincia2) {
-	    //lista temporal para almacenar las aristas que no se van a eliminar
-	    ArrayList<ArrayList<Coordinate>> nuevasAristas = new ArrayList<>();
-	    
-	    //Recorro todas las aristas existentes
-	    for (ArrayList<Coordinate> arista : aristas) {
-	        //coordenadas de los puntos de inicio y fin de la arista actual
-	        Coordinate coordInicio = arista.get(0);
-	        Coordinate coordFin = arista.get(1);
-	        
-	        //Verifico si la arista actual no corresponde a la conexión que se desea eliminar ida y vuelta
-	        if (!((coordInicio.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia1).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia1).obtenerLongitud())) &&
-	               coordFin.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia2).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia2).obtenerLongitud()))) ||
-	              ((coordInicio.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia2).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia2).obtenerLongitud()))) &&
-	               coordFin.equals(new Coordinate(mapa.obtenerProvincia(nombreProvincia1).obtenerLatitud(), mapa.obtenerProvincia(nombreProvincia1).obtenerLongitud()))))) {
-	            //Si no corresponde agrega a la lista de aristas que no se van a eliminar
-	            nuevasAristas.add(arista);
-	        }
-	    }
-	    
-	    //actualizo la lista de aristas con las aristas restantes
-	    aristas = nuevasAristas;
-	    
-	    //limpio el mapa para eliminar todas las aristas dibujadas
-	    _mapa.removeAllMapPolygons();
-	    
-	    //dibujo las aristas restantes en el mapa
-	    for (ArrayList<Coordinate> arista : aristas) {
-	        MapPolygonImpl aristaMapa = new MapPolygonImpl(arista);
-	        _mapa.addMapPolygon(aristaMapa);
-	    }
-	}
-
-//	private void dibujarPoligono()  //va dibujando el grafo con las provincias agregadas en el mapa
-//	{
-//		btnDibujarPolgono = new JButton("Dibujar Grafo");
-//		btnDibujarPolgono.setBounds(18, 218, 123, 23);
-//		btnDibujarPolgono.addActionListener(new ActionListener() 
-//		{
-//			public void actionPerformed(ActionEvent arg0) 
-//			{
-//				_poligono = new MapPolygonImpl(_lasCoordenadas);
-//				_mapa.addMapPolygon(_poligono);
-//				
-//			}
-//		});
-//	}
-//
-//	private void eliminarPoligono() 
-//	{
-//		btnEliminar = new JButton("Eliminar Grafo");
-//		btnEliminar.addActionListener(new ActionListener() 
-//		{
-//			public void actionPerformed(ActionEvent arg0) 
-//			{
-//				 _mapa.removeMapPolygon(_poligono);
-//			}
-//		});
-//		btnEliminar.setBounds(149, 218, 128, 23);
-//		panelControlRelaciones.add(btnEliminar);
-//		panelControlRelaciones.add(btnDibujarPolgono);		
-//	}
-	
 	
 	private void dividirRegiones() {
 		
@@ -338,8 +247,7 @@ public class MainForm
 	                if (similitud > 0) {
 	                    if (!nombreProvincia1.equals(nombreProvincia2)) {
 	                        mapa.agregarRelacion(nombreProvincia1, nombreProvincia2, similitud);
-	                        dibujarArista(nombreProvincia1,nombreProvincia2);
-	                        JOptionPane.showMessageDialog(null, "La relacion ha sido cargada", "Relacion Cargada", JOptionPane.INFORMATION_MESSAGE);
+							dibujarMapa(mapa.obtenerMatrizRelacion());
 	                    } else {
 	                        JOptionPane.showMessageDialog(null, "Las dos provincias seleccionadas son iguales, por favor seleccione provincias diferentes.", "Error", JOptionPane.ERROR_MESSAGE);
 	                    }
@@ -354,28 +262,35 @@ public class MainForm
 	    btnCrearRelacion.setBounds(9, 185, 134, 23);
 	    panelControlRelaciones.add(btnCrearRelacion);
 	    
-	    
-	    
 	    JButton btnEliminarRelacion = new JButton("Eliminar Relacion");
 	    btnEliminarRelacion.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            String nombreProvincia1 = comboBox_Provincia1.getSelectedItem().toString();            
 	            String nombreProvincia2 = comboBox_Provincia2.getSelectedItem().toString();
 	            
-	            eliminarArista(nombreProvincia1, nombreProvincia2);
 	            mapa.eliminarRelacion(nombreProvincia1, nombreProvincia2);
-	            
-	            JOptionPane.showMessageDialog(null, "La relacion ha sido eliminada", "Relacion Eliminada", JOptionPane.INFORMATION_MESSAGE);
+				dibujarMapa(mapa.obtenerMatrizRelacion());
+
 	        }
 	    });
 	    btnEliminarRelacion.setBounds(151, 185, 138, 23);
 	    panelControlRelaciones.add(btnEliminarRelacion);
-
-	    
 	    
 	    JLabel lblTituloRelaciones = new JLabel("Creacion de relaciones");
 	    lblTituloRelaciones.setFont(new Font("Tahoma", Font.ITALIC, 16));
 	    lblTituloRelaciones.setBounds(25, 11, 208, 22);
 	    panelControlRelaciones.add(lblTituloRelaciones);
+	}
+
+	private void dibujarMapa(int[][] matrizDeRelacion) {
+		
+		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
+		for (int i = 0; i < matrizDeRelacion.length; i++) {
+			for (int j = 0; j < matrizDeRelacion.length; j++) {
+				if (matrizDeRelacion[i][j] > 0) {
+					dibujarArista(mapa.obtenerProvinciaPorId(i).obtenerCoordenadas(), mapa.obtenerProvinciaPorId(j).obtenerCoordenadas());
+				}
+			}
+		}
 	}
 }
