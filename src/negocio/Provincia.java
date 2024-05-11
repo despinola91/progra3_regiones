@@ -10,8 +10,6 @@ public class Provincia {
     private int id;
     private String nombre;
     private Coordinate coordenadas;
-    private double latitud;
-    private double longitud;   
     
     public Provincia(int id, String nombre, Coordinate coordenadas) {
         this.id = id;
@@ -25,14 +23,6 @@ public class Provincia {
 
     public String obtenerNombre() {
         return nombre;
-    }
-
-    public double obtenerLatitud() {
-        return latitud;
-    }
-
-    public double obtenerLongitud() {
-        return longitud;
     }
 
     public Coordinate obtenerCoordenadas() {
