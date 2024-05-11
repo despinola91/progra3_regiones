@@ -6,56 +6,51 @@ public class Prim {
 
     public static int[][] generarAGM(int[][] matrizAdyacencia) {
 
-        int size = matrizAdyacencia.length;
+        int tamanio = matrizAdyacencia.length;
 
-        int[] parent = new int[size]; // Array para almacenar el Árbol Generador Mínimo
-        int[] key = new int[size]; // Claves utilizadas para seleccionar el mínimo borde del corte
+        int[] nodosPadres = new int[tamanio];
+        int[] aristas = new int[tamanio];
+        boolean[] nodosVisitados = new boolean[tamanio];
 
-        boolean[] mstSet = new boolean[size]; // Conjunto para representar los vértices aún no incluidos en el Árbol Generador Mínimo
+        // Inicializamos valores
+        Arrays.fill(aristas, Integer.MAX_VALUE);
+        Arrays.fill(nodosVisitados, false);
 
-        // Inicializar todas las claves como infinito
-        Arrays.fill(key, Integer.MAX_VALUE);
-        // Inicializar todos los vértices como no incluidos en el Árbol Generador Mínimo
-        Arrays.fill(mstSet, false);
+        // El primer vértice siempre se incluye en el AGM
+        aristas[0] = 0; // El peso de la arista desde el nodo 0 hasta el nodo 0 es 0.
+        nodosPadres[0] = -1; // El primer nodo no tiene padre
 
-        // El primer vértice siempre se incluye en el Árbol Generador Mínimo
-        key[0] = 0; // La clave del vértice 0 es 0
-        parent[0] = -1; // El primer nodo no tiene padre
+        for (int i = 0; i < tamanio - 1; i++) {
 
-        // El Árbol Generador Mínimo tendrá V-1 aristas
-        for (int count = 0; count < size - 1; count++) {
-            // Seleccionar el vértice con la clave mínima del conjunto de vértices aún no incluidos en el MST
-            int u = minKey(key, mstSet, size);
-            // Agregar el vértice seleccionado al conjunto MSTSet
-            mstSet[u] = true;
+            int nodo = obtenerSiguienteNodo(aristas, nodosVisitados, tamanio);
+            nodosVisitados[nodo] = true;
 
             // Actualizar el valor de clave y el array de padres de los vértices adyacentes del vértice seleccionado
             // Solo si el valor de la matriz de adyacencia es menor que la clave actual del vértice y el vértice adyacente no está aún en el Árbol Generador Mínimo
-            for (int v = 0; v < size; v++) {
-                if (matrizAdyacencia[u][v] != 0 && !mstSet[v] && matrizAdyacencia[u][v] < key[v]) {
-                    parent[v] = u;
-                    key[v] = matrizAdyacencia[u][v];
+            for (int j = 0; j < tamanio; j++) {
+                if (matrizAdyacencia[nodo][j] != 0 && !nodosVisitados[j] && matrizAdyacencia[nodo][j] < aristas[j]) {
+                    nodosPadres[j] = nodo;
+                    aristas[j] = matrizAdyacencia[nodo][j];
                 }
             }
         }
 
         // Crear la matriz de adyacencia para el Árbol Generador Mínimo resultante
-        int[][] mst = new int[size][size];
-        for (int i = 1; i < size; i++) {
-            mst[parent[i]][i] = matrizAdyacencia[i][parent[i]];
-            mst[i][parent[i]] = matrizAdyacencia[i][parent[i]];
+        int[][] matrizAGM = new int[tamanio][tamanio];
+        for (int i = 1; i < tamanio; i++) {
+            matrizAGM[nodosPadres[i]][i] = matrizAdyacencia[i][nodosPadres[i]];
+            matrizAGM[i][nodosPadres[i]] = matrizAdyacencia[i][nodosPadres[i]];
         }
 
         // Devolver la matriz de adyacencia del Árbol Generador Mínimo resultante
-        return mst;
-        
+        return matrizAGM;
     }
 
-    private static int minKey(int[] key, boolean[] mstSet, int V) {
+    private static int obtenerSiguienteNodo(int[] key, boolean[] nodosVisitados, int V) {
         int min = Integer.MAX_VALUE, minIndex = -1;
 
         for (int v = 0; v < V; v++) {
-            if (!mstSet[v] && key[v] < min) {
+            if (!nodosVisitados[v] && key[v] < min) {
                 min = key[v];
                 minIndex = v;
             }
