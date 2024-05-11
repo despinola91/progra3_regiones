@@ -4,22 +4,14 @@ import java.util.Arrays;
 
 public class Prim {
 
-    int[][] matrizRegiones;
+    public static int[][] generarAGM(int[][] matrizAdyacencia) {
 
-	public static void crearAlgoritmoPrim() {
-		// TODO Auto-generated method stub
-		
-	}
+        int size = matrizAdyacencia.length;
 
-    public static int[][] generarAGM(int[][] graph) {
-        // TODO Auto-generated method stub
-        //throw new UnsupportedOperationException("Unimplemented method 'obtenerRegiones'");
+        int[] parent = new int[size]; // Array para almacenar el Árbol Generador Mínimo
+        int[] key = new int[size]; // Claves utilizadas para seleccionar el mínimo borde del corte
 
-        
-        int[] parent = new int[graph.length]; // Array para almacenar el Árbol Generador Mínimo
-        int[] key = new int[graph.length]; // Claves utilizadas para seleccionar el mínimo borde del corte
-
-        boolean[] mstSet = new boolean[graph.length]; // Conjunto para representar los vértices aún no incluidos en el Árbol Generador Mínimo
+        boolean[] mstSet = new boolean[size]; // Conjunto para representar los vértices aún no incluidos en el Árbol Generador Mínimo
 
         // Inicializar todas las claves como infinito
         Arrays.fill(key, Integer.MAX_VALUE);
@@ -31,27 +23,27 @@ public class Prim {
         parent[0] = -1; // El primer nodo no tiene padre
 
         // El Árbol Generador Mínimo tendrá V-1 aristas
-        for (int count = 0; count < graph.length - 1; count++) {
+        for (int count = 0; count < size - 1; count++) {
             // Seleccionar el vértice con la clave mínima del conjunto de vértices aún no incluidos en el MST
-            int u = minKey(key, mstSet, graph.length);
+            int u = minKey(key, mstSet, size);
             // Agregar el vértice seleccionado al conjunto MSTSet
             mstSet[u] = true;
 
             // Actualizar el valor de clave y el array de padres de los vértices adyacentes del vértice seleccionado
             // Solo si el valor de la matriz de adyacencia es menor que la clave actual del vértice y el vértice adyacente no está aún en el Árbol Generador Mínimo
-            for (int v = 0; v < graph.length; v++) {
-                if (graph[u][v] != 0 && !mstSet[v] && graph[u][v] < key[v]) {
+            for (int v = 0; v < size; v++) {
+                if (matrizAdyacencia[u][v] != 0 && !mstSet[v] && matrizAdyacencia[u][v] < key[v]) {
                     parent[v] = u;
-                    key[v] = graph[u][v];
+                    key[v] = matrizAdyacencia[u][v];
                 }
             }
         }
 
         // Crear la matriz de adyacencia para el Árbol Generador Mínimo resultante
-        int[][] mst = new int[graph.length][graph.length];
-        for (int i = 1; i < graph.length; i++) {
-            mst[parent[i]][i] = graph[i][parent[i]];
-            mst[i][parent[i]] = graph[i][parent[i]];
+        int[][] mst = new int[size][size];
+        for (int i = 1; i < size; i++) {
+            mst[parent[i]][i] = matrizAdyacencia[i][parent[i]];
+            mst[i][parent[i]] = matrizAdyacencia[i][parent[i]];
         }
 
         // Devolver la matriz de adyacencia del Árbol Generador Mínimo resultante
@@ -68,15 +60,6 @@ public class Prim {
                 minIndex = v;
             }
         }
-
         return minIndex;
     }
-    // public static int[][] obtenerRegiones(int[][] matrizDeRelacion, int cantidadRegiones) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'obtenerRegiones'");
-
-
-        
-    // }
-
 }
