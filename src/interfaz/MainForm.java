@@ -195,7 +195,7 @@ public class MainForm
 
 		                // Se obtienen las regiones aplicando el algoritmo seleccionado
 						mapa.generarRegiones(numRegiones, algoritmo);
-						dibujarMapa(mapa.obtenerRegiones());
+						dibujarMapa(mapa.obtenerMatrizRegiones());
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
@@ -287,7 +287,7 @@ public class MainForm
 		
 		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
 		for (int i = 0; i < matrizDeRelacion.length; i++) {
-			for (int j = 0; j < matrizDeRelacion.length; j++) {
+			for (int j = 0; j < matrizDeRelacion.length; j++) {  
 				if (matrizDeRelacion[i][j] > 0) {
 					dibujarArista(mapa.obtenerProvinciaPorId(i).obtenerCoordenadas(), mapa.obtenerProvinciaPorId(j).obtenerCoordenadas());
 				}
