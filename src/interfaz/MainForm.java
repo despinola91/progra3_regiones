@@ -193,19 +193,9 @@ public class MainForm
 		             // Obtener la opción seleccionada en el comboBox
 		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
 
-		             // Se llama al método para dividir en regiones y obtener la matriz resultante
-		                int[][] regiones = mapa.obtenerRegiones(numRegiones, algoritmo);
-		                
-		                // Iterar sobre la matriz de regiones y agregar marcadores al mapa
-		               /* for (int i = 0; i < regiones.length; i++) {
-		                    Coordinate coordenada = new Coordinate(regiones[i][0], regiones[i][1]);
-		                    String nombreRegion = "Región " + (i + 1); // Nombre de la región
-		                    _mapa.addMapMarker(new MapMarkerDot(nombreRegion, coordenada));
-		                }*/
-		                
-		             // Dibujar relaciones entre las provincias de cada región
-		                // Dibujar relaciones entre las provincias de cada región
-		                dibujarMapa(regiones);
+		                // Se obtienen las regiones aplicando el algoritmo seleccionado
+						mapa.generarRegiones(numRegiones, algoritmo);
+						dibujarMapa(mapa.obtenerMatrizRegiones());
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
