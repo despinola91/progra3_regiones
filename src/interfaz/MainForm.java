@@ -195,7 +195,7 @@ public class MainForm
 
 		                // Se obtienen las regiones aplicando el algoritmo seleccionado
 						mapa.generarRegiones(numRegiones, algoritmo);
-						dibujarMapa(mapa.obtenerRegiones());
+						dibujarMapa(mapa.obtenerMatrizRegiones());
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
