@@ -196,7 +196,7 @@ public class MainForm
 		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
 
 		                // Se obtienen las regiones aplicando el algoritmo seleccionado y la cantidad de Regiones
-						mapa.obtenerRegiones(numRegiones, algoritmo);
+						mapa.generarRegiones(numRegiones, algoritmo);
 						dibujarMapa(mapa.obtenerMatrizRelacion());
 		                
 		            } else {
