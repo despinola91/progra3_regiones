@@ -201,5 +201,9 @@ public class Mapa {
     public int[][] obtenerMatrizRelacion() {
         return matrizDeRelacion;
     }
-    
+
+    public boolean esMapaConexo(int[][] matriz) {
+        
+        return BFS.grafoEsConexo(matriz);
+    }
 }
