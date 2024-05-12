@@ -2,7 +2,7 @@ package negocio;
 
 import java.util.*;
 
-class Kruskal {
+public class Kruskal {
     static class Arista implements Comparable<Arista> {
         int origen, destino, peso;
 
