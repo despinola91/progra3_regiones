@@ -118,6 +118,7 @@ public class MainForm
 		dividirRegiones();
 	}
 	
+	//El usuario va agregando las provincias en el mapa
 	private void detectarCoordenadas() 
 	{	
 		_mapa.addMouseListener(new MouseAdapter() 
@@ -143,6 +144,7 @@ public class MainForm
 		});
 	}
 	
+	//Se dibuja con una recta las relaciones entre provincias una vez agregada la similitud
 	private void dibujarArista(Coordinate coordenadaProv1, Coordinate coordenadaProv2) {
 	    ArrayList<Coordinate> listaCoordenadas = new ArrayList<>();
 	    
