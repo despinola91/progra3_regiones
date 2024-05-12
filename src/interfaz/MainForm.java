@@ -134,7 +134,7 @@ public class MainForm
 
 				if (nombre != null && !nombre.isEmpty()) {
 					_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
-					mapa.agregarProvincia(nombre, coordenadas);
+					mapa.agregarProvincia(nombre, coordenadas); //se agregan las provincias en la matriz llamando a mapa del paquete Negocio
 					
 					comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 					comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
@@ -195,7 +195,7 @@ public class MainForm
 		             // Obtener la opción seleccionada en el comboBox
 		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
 
-		                // Se obtienen las regiones aplicando el algoritmo seleccionado
+		                // Se obtienen las regiones aplicando el algoritmo seleccionado y la cantidad de Regiones
 						mapa.obtenerRegiones(numRegiones, algoritmo);
 						dibujarMapa(mapa.obtenerMatrizRelacion());
 		                
