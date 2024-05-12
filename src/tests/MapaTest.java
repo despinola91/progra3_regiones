@@ -91,8 +91,8 @@ class MapaTest {
 	@Test
 	void obtenerRegionesTest() {
 		Mapa mapa = new Mapa();
-		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "kruskal"));
-		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerRegiones(3, "prim"));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.generarRegiones(3, "kruskal"));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.generarRegiones(3, "prim"));
 	}
 
 	@Test
@@ -104,8 +104,8 @@ class MapaTest {
 		
 		assertTrue(provincia.obtenerId() ==0);
 		assertTrue(provincia.obtenerNombre() == "Buenos Aires");
-		assertTrue(provincia.obtenerLatitud() == 50);
-		assertTrue(provincia.obtenerLongitud() == 60);
+		assertTrue(provincia.obtenerCoordenadas().getLat() == 50.00);
+		assertTrue(provincia.obtenerCoordenadas().getLon() == 60.00);
 	}
 
 	@Test
@@ -117,8 +117,8 @@ class MapaTest {
 
 		assertTrue(provincia.obtenerId() ==0);
 		assertTrue(provincia.obtenerNombre() == "Buenos Aires");
-		assertTrue(provincia.obtenerLatitud() == 50);
-		assertTrue(provincia.obtenerLongitud() == 60);
+		assertTrue(provincia.obtenerCoordenadas().getLat() == 50);
+		assertTrue(provincia.obtenerCoordenadas().getLon() == 60);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.obtenerProvinciaPorId(1));
 	}	
 
@@ -135,5 +135,28 @@ class MapaTest {
 								  {5, 0, 0},
 								  {0, 0, 0}};
 		assertArrayEquals(expectedMatrix, mapa.obtenerMatrizRelacion());
+	}
+
+	@Test
+	void dividirRegionesTest() {
+		Mapa mapa = new Mapa();
+		
+		int[][] matrizDeRegiones = {
+			{0, 2, 0, 6, 0},
+			{2, 0, 3, 0, 5},
+			{0, 3, 0, 0, 0},
+			{6, 0, 0, 0, 0},
+			{0, 5, 0, 0, 0}
+		};
+
+		int[][] matrizEsperada = {
+			{0, 2, 0, 0, 0},
+			{2, 0, 3, 0, 5},
+			{0, 3, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+			{0, 5, 0, 0, 0}
+		};
+
+		assertArrayEquals(matrizEsperada, mapa.dividirRegiones(matrizDeRegiones, 2));
 	}
 }

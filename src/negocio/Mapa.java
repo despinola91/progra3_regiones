@@ -9,7 +9,9 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
 public class Mapa {
 
     private HashMap<String, Provincia> provincias = new HashMap<>();
+    private ArrayList<Relacion> relaciones = new ArrayList<>();
     private int[][] matrizDeRelacion;
+    private int[][] matrizDeRegiones;
     
     public Mapa()
 	{
@@ -25,7 +27,9 @@ public class Mapa {
 
         matrizDeRelacion[idProv1][idProv2] = similitud;
         matrizDeRelacion[idProv2][idProv1] = similitud;
-        
+
+        Relacion relacion = new Relacion(provincias.get(nombreProvincia1), provincias.get(nombreProvincia2), similitud);
+        relaciones.add(relacion);
 	}
 
     public void eliminarRelacion(String nombreProvincia1, String nombreProvincia2)
@@ -34,11 +38,16 @@ public class Mapa {
 		validarProvincia(nombreProvincia2);
 		validarRelacion(nombreProvincia1, nombreProvincia2);
 
-        int idProv1 = provincias.get(nombreProvincia1).obtenerId();
-        int idProv2 = provincias.get(nombreProvincia2).obtenerId();
+        Provincia provinciaA = provincias.get(nombreProvincia1);
+        Provincia provinciaB = provincias.get(nombreProvincia2);
+
+        int idProv1 = provinciaA.obtenerId();
+        int idProv2 = provinciaB.obtenerId();
 
 		matrizDeRelacion[idProv1][idProv2] = 0;
         matrizDeRelacion[idProv2][idProv1] = 0;
+        
+        relaciones.remove(Relacion.obtenerRelacion(relaciones, provinciaA, provinciaB));
 	}
 
     private void validarRelacion (String nombreProvincia1, String nombreProvincia2) {
@@ -135,22 +144,66 @@ public class Mapa {
         throw new IllegalArgumentException("Provincia not found for id: " + id);
     }
 
-    public int[][] obtenerRegiones(int cantidadRegiones, String algoritmo) {
-        int[][] regiones = new int[provincias.size()][provincias.size()];
+    public void generarRegiones(int cantidadRegiones, String algoritmo) {
+        matrizDeRegiones = new int[provincias.size()][provincias.size()];
         if (algoritmo == "Prim") {
-            regiones = Prim.obtenerRegiones(matrizDeRelacion, cantidadRegiones);
+            matrizDeRegiones = Prim.generarAGM(matrizDeRelacion);
         }
         else if (algoritmo == "Kruskal") {
-            regiones = Kruskal.obtenerRegiones(matrizDeRelacion, cantidadRegiones);
+            matrizDeRegiones = Kruskal.generarAGM(matrizDeRelacion);
         } 
         else {
             throw new IllegalArgumentException("El algoritmo seleccionado no es válido.");
         }
-        
-        return regiones;
+
+        matrizDeRegiones = dividirRegiones(matrizDeRegiones, cantidadRegiones);
+    }
+    
+    public int[][] dividirRegiones(int[][] matrizDeRegiones, int cantidadRegiones) {
+        int[][] matrizResultado = new int[matrizDeRegiones.length][matrizDeRegiones.length];
+
+        // Copiar la matriz original a la matriz resultado
+        for (int i = 0; i < matrizDeRegiones.length; i++) {
+            for (int j = 0; j < matrizDeRegiones[0].length; j++) {
+                matrizResultado[i][j] = matrizDeRegiones[i][j];
+            }
+        }
+
+        // Poner en 0 los valores más altos de la matriz resultado
+        for (int k = 0; k < cantidadRegiones-1; k++) {
+            int maximo = Integer.MIN_VALUE;
+            int filaMaximo = -1;
+            int columnaMaximo = -1;
+
+            // Encontrar el valor más alto en la matriz resultado
+            for (int i = 0; i < matrizResultado.length; i++) {
+                for (int j = 0; j < matrizResultado[0].length; j++) {
+                    if (matrizResultado[i][j] > maximo) {
+                        maximo = matrizResultado[i][j];
+                        filaMaximo = i;
+                        columnaMaximo = j;
+                    }
+                }
+            }
+
+            // Poner en 0 el valor más alto encontrado
+            matrizResultado[filaMaximo][columnaMaximo] = 0;
+            matrizResultado[columnaMaximo][filaMaximo] = 0;
+        }
+
+        return matrizResultado;
+    }
+
+    public int[][] obtenerMatrizRegiones() {
+        return matrizDeRegiones;
     }
 
     public int[][] obtenerMatrizRelacion() {
         return matrizDeRelacion;
+    }
+
+    public boolean esMapaConexo(int[][] matriz) {
+        
+        return BFS.grafoEsConexo(matriz);
     }
 }
