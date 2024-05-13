@@ -50,6 +50,7 @@ public class MainForm
 	private JComboBox comboBox_Provincia2;
 	private JComboBox comboBox_Provincia1;
 	private JComboBox comboBox_Algoritmo;
+	private JButton btnReset;
 	
 	private JTextPane textPaneMuestraRelaciones;
 
@@ -119,14 +120,18 @@ public class MainForm
 		panelControlRegiones.setLayout(null);
 		
 		panelMuestraRelaciones = new JPanel();
-	    panelMuestraRelaciones.setBounds(764, 10, 238, 512);
+	    panelMuestraRelaciones.setBounds(764, 10, 238, 470);
 	    frmProvinciasArgentinas.getContentPane().add(panelMuestraRelaciones);
 	    panelMuestraRelaciones.setLayout(null);
 	    panelMuestraRelaciones.setOpaque(false);
 
+		btnReset = new JButton("Reset Mapa");
+		btnReset.setBounds(786, 499, 190, 23);
+		frmProvinciasArgentinas.getContentPane().add(btnReset);
+		
 		lblBandera = new JLabel("");
 		lblBandera.setIcon(new ImageIcon("fondoBandera.png"));
-		lblBandera.setBounds(0, 0, 1000, 536);
+		lblBandera.setBounds(8, 0, 1000, 536);
 		frmProvinciasArgentinas.getContentPane().add(lblBandera);
 		
 		mapa = new Mapa();
@@ -135,6 +140,7 @@ public class MainForm
 		cargarRelaciones();
 		dividirRegiones();
 		mostrarRelaciones();
+		reset();
 	}
 	
 	//El usuario va agregando las provincias en el mapa
@@ -364,8 +370,21 @@ public class MainForm
 	    
 	    JTable tablaRelaciones = new JTable(modelo);
 	    JScrollPane scrollPane = new JScrollPane(tablaRelaciones);
-	    scrollPane.setBounds(0, 39, 228, 448);
+	    scrollPane.setBounds(0, 39, 228, 427);
 	    panelMuestraRelaciones.add(scrollPane);
 	}
-
+	
+	private void reset() 
+	{	
+		btnReset.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				_mapa.removeAllMapMarkers();
+				_mapa.removeAllMapPolygons();
+				mapa.resetearMapa();
+				mostrarRelaciones();
+			}
+		});
+	}	
 }

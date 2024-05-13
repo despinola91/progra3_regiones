@@ -210,5 +210,14 @@ public class Mapa {
     public ArrayList<Relacion> obtenerRelaciones() {
         return relaciones;
     }
+    
+    public void resetearMapa() {
+        for (int i = 0; i < matrizDeRelacion.length; i++) {
+            for (int j = 0; j < matrizDeRelacion[0].length; j++) {
+                matrizDeRelacion[i][j] = 0;
+            }
+        }
+    }
+
 
 }
