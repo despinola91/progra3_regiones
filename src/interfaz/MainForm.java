@@ -32,6 +32,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+
+
+
 public class MainForm 
 {
 	public JFrame frmProvinciasArgentinas;
@@ -86,7 +92,7 @@ public class MainForm
 		frmProvinciasArgentinas = new JFrame();
 		frmProvinciasArgentinas.setResizable(false);
 		frmProvinciasArgentinas.setTitle("Provincias Argentinas");
-		frmProvinciasArgentinas.setBounds(200, 25, 987, 575);
+		frmProvinciasArgentinas.setBounds(200, 25, 1016, 575);
 		frmProvinciasArgentinas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProvinciasArgentinas.getContentPane().setLayout(null);
 		
@@ -113,14 +119,14 @@ public class MainForm
 		panelControlRegiones.setLayout(null);
 		
 		panelMuestraRelaciones = new JPanel();
-	    panelMuestraRelaciones.setBounds(764, 10, 197, 512);
+	    panelMuestraRelaciones.setBounds(764, 10, 238, 512);
 	    frmProvinciasArgentinas.getContentPane().add(panelMuestraRelaciones);
 	    panelMuestraRelaciones.setLayout(null);
 	    panelMuestraRelaciones.setOpaque(false);
 
 		lblBandera = new JLabel("");
 		lblBandera.setIcon(new ImageIcon("fondoBandera.png"));
-		lblBandera.setBounds(0, 0, 971, 536);
+		lblBandera.setBounds(0, 0, 1000, 536);
 		frmProvinciasArgentinas.getContentPane().add(lblBandera);
 		
 		mapa = new Mapa();
@@ -222,6 +228,7 @@ public class MainForm
 		                if (mapa.esMapaConexo(mapa.obtenerMatrizRelacion())) {
 		                	mapa.generarRegiones(numRegiones, algoritmo);
 		                	dibujarRegiones(mapa.obtenerMatrizRegiones());
+		                	mostrarRelaciones();
 						
 		                }else {
 							JOptionPane.showMessageDialog(null, "Todas las provincias deben tener al menos una similitud cargada (Grafo inconexo!)", "Error", JOptionPane.ERROR_MESSAGE);
@@ -338,33 +345,27 @@ public class MainForm
 	}
 
 	private void mostrarRelaciones() {
-
-		JLabel lblRelaciones = new JLabel("Relaciones");
+		JLabel lblRelaciones = new JLabel("Similitudes");
 		lblRelaciones.setForeground(new Color(0, 255, 0));
 		lblRelaciones.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		lblRelaciones.setBounds(10, 11, 140, 22);
+		lblRelaciones.setBounds(10, 6, 140, 22);
 		panelMuestraRelaciones.add(lblRelaciones);
-
-		textPaneMuestraRelaciones = new JTextPane();
-		textPaneMuestraRelaciones.setForeground(new Color(255, 0, 0));
-		textPaneMuestraRelaciones.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 9));
-		textPaneMuestraRelaciones.setEditable(false);
-		textPaneMuestraRelaciones.setFocusable(false);
-		textPaneMuestraRelaciones.setBounds(10, 39, 177, 463);
-		panelMuestraRelaciones.add(textPaneMuestraRelaciones);		
-		textPaneMuestraRelaciones.setOpaque(false);
-
-		textPaneMuestraRelaciones.setText("");
-
-		StringBuilder sb = new StringBuilder();
-		for (Relacion relacion : mapa.obtenerRelaciones()) {
-			Provincia provinciaA = relacion.obtenerProvincias().get(0);
-			Provincia provinciaB = relacion.obtenerProvincias().get(1);
-			int similitud = relacion.obtenerSimilitud();
-			sb.append(provinciaA.obtenerNombre()).append(" <---> ").append(provinciaB.obtenerNombre()).append(" = ").append(similitud).append("\n");
-		}
-
-		textPaneMuestraRelaciones.setText(sb.toString());
+		
+	    String[] columnas = {"Origen", "Destino", "Similaridad"};
+	    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+	    
+	    for (Relacion relacion : mapa.obtenerRelaciones()) {
+	        Provincia provinciaA = relacion.obtenerProvincias().get(0);
+	        Provincia provinciaB = relacion.obtenerProvincias().get(1);
+	        int similitud = relacion.obtenerSimilitud();
+	        Object[] fila = {provinciaA.obtenerNombre(), provinciaB.obtenerNombre(), similitud};
+	        modelo.addRow(fila);
+	    }
+	    
+	    JTable tablaRelaciones = new JTable(modelo);
+	    JScrollPane scrollPane = new JScrollPane(tablaRelaciones);
+	    scrollPane.setBounds(0, 39, 228, 448);
+	    panelMuestraRelaciones.add(scrollPane);
 	}
 
 }
