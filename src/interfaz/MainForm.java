@@ -374,17 +374,23 @@ public class MainForm
 	    panelMuestraRelaciones.add(scrollPane);
 	}
 	
-	private void reset() 
-	{	
-		btnReset.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				_mapa.removeAllMapMarkers();
-				_mapa.removeAllMapPolygons();
-				mapa.resetearMapa();
-				mostrarRelaciones();
-			}
-		});
-	}	
+	
+	// Se Agrega esta función
+	private void limpiarScrollPane() {
+	    panelMuestraRelaciones.revalidate();
+	    panelMuestraRelaciones.repaint();
+	}
+
+	//para resetear todo
+	private void reset() {   
+	    btnReset.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent arg0) {
+	            _mapa.removeAllMapMarkers();
+	            _mapa.removeAllMapPolygons();
+	            mapa.resetearMapa();
+	            limpiarScrollPane(); // Llama a la función para limpiar el JScrollPane
+	        }
+	    });
+	}
+	
 }
