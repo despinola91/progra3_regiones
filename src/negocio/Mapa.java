@@ -206,4 +206,9 @@ public class Mapa {
         
         return BFS.grafoEsConexo(matriz);
     }
+    
+    public ArrayList<Relacion> obtenerRelaciones() {
+        return relaciones;
+    }
+
 }

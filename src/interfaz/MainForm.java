@@ -12,6 +12,9 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 import negocio.Mapa;
+import negocio.Provincia;
+import negocio.Relacion;
+
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -36,10 +39,13 @@ public class MainForm
 	private JPanel panelMapa;
 	private JPanel panelControlRelaciones;
 	private JPanel panelControlRegiones;
+	private JPanel panelMuestraRelaciones;
 
 	private JComboBox comboBox_Provincia2;
 	private JComboBox comboBox_Provincia1;
 	private JComboBox comboBox_Algoritmo;
+	
+	private JTextPane textPaneMuestraRelaciones;
 
 	private JMapViewer _mapa;
 	private JLabel lblBandera;
@@ -80,7 +86,7 @@ public class MainForm
 		frmProvinciasArgentinas = new JFrame();
 		frmProvinciasArgentinas.setResizable(false);
 		frmProvinciasArgentinas.setTitle("Provincias Argentinas");
-		frmProvinciasArgentinas.setBounds(200, 25, 780, 575);
+		frmProvinciasArgentinas.setBounds(200, 25, 987, 575);
 		frmProvinciasArgentinas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProvinciasArgentinas.getContentPane().setLayout(null);
 		
@@ -105,11 +111,16 @@ public class MainForm
 		panelControlRegiones.setBounds(455, 273, 299, 249);
 		frmProvinciasArgentinas.getContentPane().add(panelControlRegiones);
 		panelControlRegiones.setLayout(null);
-
 		
+		panelMuestraRelaciones = new JPanel();
+	    panelMuestraRelaciones.setBounds(764, 10, 197, 512);
+	    frmProvinciasArgentinas.getContentPane().add(panelMuestraRelaciones);
+	    panelMuestraRelaciones.setLayout(null);
+	    panelMuestraRelaciones.setOpaque(false);
+
 		lblBandera = new JLabel("");
 		lblBandera.setIcon(new ImageIcon("fondoBandera.png"));
-		lblBandera.setBounds(0, 0, 766, 528);
+		lblBandera.setBounds(0, 0, 971, 536);
 		frmProvinciasArgentinas.getContentPane().add(lblBandera);
 		
 		mapa = new Mapa();
@@ -117,6 +128,7 @@ public class MainForm
 		detectarCoordenadas();	
 		cargarRelaciones();
 		dividirRegiones();
+		mostrarRelaciones();
 	}
 	
 	//El usuario va agregando las provincias en el mapa
@@ -205,11 +217,9 @@ public class MainForm
 		            int numRegiones = Integer.parseInt(input);
 		            if (numRegiones > 0) {
 		                System.out.println("Numero de regiones: " + numRegiones);
-		             // Obtener la opción seleccionada en el comboBox
 		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
 		                
 		                if (mapa.esMapaConexo(mapa.obtenerMatrizRelacion())) {
-		                // Se obtienen las regiones aplicando el algoritmo seleccionado y la cantidad de Regiones
 		                	mapa.generarRegiones(numRegiones, algoritmo);
 		                	dibujarRegiones(mapa.obtenerMatrizRegiones());
 						
@@ -269,6 +279,7 @@ public class MainForm
 	                    if (!nombreProvincia1.equals(nombreProvincia2)) {
 	                        mapa.agregarRelacion(nombreProvincia1, nombreProvincia2, similitud);
 							dibujarMapa(mapa.obtenerMatrizRelacion());
+							mostrarRelaciones();
 	                    } else {
 	                        JOptionPane.showMessageDialog(null, "Las dos provincias seleccionadas son iguales, por favor seleccione provincias diferentes.", "Error", JOptionPane.ERROR_MESSAGE);
 	                    }
@@ -291,7 +302,7 @@ public class MainForm
 	            
 	            mapa.eliminarRelacion(nombreProvincia1, nombreProvincia2);
 				dibujarMapa(mapa.obtenerMatrizRelacion());
-
+				mostrarRelaciones();
 	        }
 	    });
 	    btnEliminarRelacion.setBounds(151, 185, 138, 23);
@@ -304,7 +315,7 @@ public class MainForm
 	}
 
 	private void dibujarMapa(int[][] matrizDeRelacion) {
-		
+
 		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
 		for (int i = 0; i < matrizDeRelacion.length; i++) {
 			for (int j = 0; j < matrizDeRelacion.length; j++) {  
@@ -314,7 +325,8 @@ public class MainForm
 			}
 		}
 	}
-private void dibujarRegiones(int[][] matrizDeRelacion) {
+
+	private void dibujarRegiones(int[][] matrizDeRelacion) {
 		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
 		for (int i = 0; i < matrizDeRelacion.length; i++) {
 			for (int j = 0; j < matrizDeRelacion.length; j++) {  
@@ -324,5 +336,35 @@ private void dibujarRegiones(int[][] matrizDeRelacion) {
 			}
 		}
 	}
-	
+
+	private void mostrarRelaciones() {
+
+		JLabel lblRelaciones = new JLabel("Relaciones");
+		lblRelaciones.setForeground(new Color(0, 255, 0));
+		lblRelaciones.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		lblRelaciones.setBounds(10, 11, 140, 22);
+		panelMuestraRelaciones.add(lblRelaciones);
+
+		textPaneMuestraRelaciones = new JTextPane();
+		textPaneMuestraRelaciones.setForeground(new Color(255, 0, 0));
+		textPaneMuestraRelaciones.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 9));
+		textPaneMuestraRelaciones.setEditable(false);
+		textPaneMuestraRelaciones.setFocusable(false);
+		textPaneMuestraRelaciones.setBounds(10, 39, 177, 463);
+		panelMuestraRelaciones.add(textPaneMuestraRelaciones);		
+		textPaneMuestraRelaciones.setOpaque(false);
+
+		textPaneMuestraRelaciones.setText("");
+
+		StringBuilder sb = new StringBuilder();
+		for (Relacion relacion : mapa.obtenerRelaciones()) {
+			Provincia provinciaA = relacion.obtenerProvincias().get(0);
+			Provincia provinciaB = relacion.obtenerProvincias().get(1);
+			int similitud = relacion.obtenerSimilitud();
+			sb.append(provinciaA.obtenerNombre()).append(" <---> ").append(provinciaB.obtenerNombre()).append(" = ").append(similitud).append("\n");
+		}
+
+		textPaneMuestraRelaciones.setText(sb.toString());
+	}
+
 }
