@@ -20,6 +20,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.awt.Point;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
@@ -156,6 +157,18 @@ public class MainForm
 	    _mapa.addMapPolygon(relacion);
 	}
 	
+	private void dibujarAristaRegiones(Coordinate coordenadaProv1, Coordinate coordenadaProv2, Color color) {
+	    ArrayList<Coordinate> listaCoordenadas = new ArrayList<>();
+	    
+	    listaCoordenadas.add(coordenadaProv1);
+	    listaCoordenadas.add(coordenadaProv2);
+	    listaCoordenadas.add(coordenadaProv1);
+	    
+	    MapPolygonImpl relacion = new MapPolygonImpl(listaCoordenadas);
+	    relacion.setColor(color); // Establecer el color de la relación
+	    _mapa.addMapPolygon(relacion);
+	}
+	
 	private void dividirRegiones() {
 		
 	    JLabel lblTituloRegiones = new JLabel("Creacion de regiones");
@@ -197,8 +210,8 @@ public class MainForm
 		                
 		                if (mapa.esMapaConexo(mapa.obtenerMatrizRelacion())) {
 		                // Se obtienen las regiones aplicando el algoritmo seleccionado y la cantidad de Regiones
-		                mapa.generarRegiones(numRegiones, algoritmo);
-						dibujarMapa(mapa.obtenerMatrizRegiones());
+		                	mapa.generarRegiones(numRegiones, algoritmo);
+		                	dibujarRegiones(mapa.obtenerMatrizRegiones());
 						
 		                }else {
 							JOptionPane.showMessageDialog(null, "Todas las provincias deben tener al menos una similitud cargada (Grafo inconexo!)", "Error", JOptionPane.ERROR_MESSAGE);
@@ -301,4 +314,15 @@ public class MainForm
 			}
 		}
 	}
+private void dibujarRegiones(int[][] matrizDeRelacion) {
+		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
+		for (int i = 0; i < matrizDeRelacion.length; i++) {
+			for (int j = 0; j < matrizDeRelacion.length; j++) {  
+				if (matrizDeRelacion[i][j] > 0) {
+					dibujarAristaRegiones(mapa.obtenerProvinciaPorId(i).obtenerCoordenadas(), mapa.obtenerProvinciaPorId(j).obtenerCoordenadas(), Color.RED);
+				}
+			}
+		}
+	}
+	
 }
