@@ -194,10 +194,15 @@ public class MainForm
 		                System.out.println("Numero de regiones: " + numRegiones);
 		             // Obtener la opción seleccionada en el comboBox
 		                String algoritmo = (String) comboBox_Algoritmo.getSelectedItem();
-
+		                
+		                if (mapa.esMapaConexo(mapa.obtenerMatrizRelacion())) {
 		                // Se obtienen las regiones aplicando el algoritmo seleccionado y la cantidad de Regiones
-						mapa.generarRegiones(numRegiones, algoritmo);
-						dibujarMapa(mapa.obtenerMatrizRelacion());
+		                mapa.generarRegiones(numRegiones, algoritmo);
+						dibujarMapa(mapa.obtenerMatrizRegiones());
+						
+		                }else {
+							JOptionPane.showMessageDialog(null, "Todas las provincias deben tener al menos una similitud cargada (Grafo inconexo!)", "Error", JOptionPane.ERROR_MESSAGE);
+						}
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero mayor a 0", "Error", JOptionPane.ERROR_MESSAGE);
