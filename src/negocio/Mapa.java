@@ -211,13 +211,11 @@ public class Mapa {
         return relaciones;
     }
     
-    public void resetearMapa() {
-        for (int i = 0; i < matrizDeRelacion.length; i++) {
-            for (int j = 0; j < matrizDeRelacion[0].length; j++) {
-                matrizDeRelacion[i][j] = 0;
-            }
-        }
-    }
+    public void reiniciarMapa() {
 
+        matrizDeRelacion = new int[0][0];
+        provincias.clear();
+        relaciones.clear();
+    }
 
 }
