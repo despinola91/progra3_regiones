@@ -125,7 +125,7 @@ public class MainForm
 	    panelMuestraRelaciones.setLayout(null);
 	    panelMuestraRelaciones.setOpaque(false);
 
-		btnReset = new JButton("Reset Mapa");
+		btnReset = new JButton("Reiniciar Mapa");
 		btnReset.setBounds(786, 499, 190, 23);
 		frmProvinciasArgentinas.getContentPane().add(btnReset);
 		
@@ -387,10 +387,15 @@ public class MainForm
 	        public void actionPerformed(ActionEvent arg0) {
 	            _mapa.removeAllMapMarkers();
 	            _mapa.removeAllMapPolygons();
-	            mapa.resetearMapa();
+	            mapa.reiniciarMapa();
 	            limpiarScrollPane(); // Llama a la función para limpiar el JScrollPane
+				limpiarDesplegablesProvincias();
 	        }
 	    });
 	}
-	
+
+	private void limpiarDesplegablesProvincias() {
+		comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
+		comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
+	}	
 }
