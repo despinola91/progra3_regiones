@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 public class Prim {
 
+    /**
+     * Ejecuta el algoritmo de AGM.
+     * @param matrizAdyacencia
+     * @return matriz de adyacencia con el resultado del algoritmo.
+     */
     public static int[][] generarAGM(int[][] matrizAdyacencia) {
 
         int tamanio = matrizAdyacencia.length;
@@ -46,13 +51,20 @@ public class Prim {
         return matrizAGM;
     }
 
-    private static int obtenerSiguienteNodo(int[] key, boolean[] nodosVisitados, int V) {
+    /**
+     * Obtiene siguiente nodo vecino a ser visitado.
+     * @param key
+     * @param nodosVisitados
+     * @param cantidadNodos
+     * @return indice de siguiente nodo a ser visitado.
+     */
+    private static int obtenerSiguienteNodo(int[] key, boolean[] nodosVisitados, int cantidadNodos) {
         int min = Integer.MAX_VALUE, minIndex = -1;
 
-        for (int v = 0; v < V; v++) {
-            if (!nodosVisitados[v] && key[v] < min) {
-                min = key[v];
-                minIndex = v;
+        for (int i = 0; i < cantidadNodos; i++) {
+            if (!nodosVisitados[i] && key[i] < min) {
+                min = key[i];
+                minIndex = i;
             }
         }
         return minIndex;

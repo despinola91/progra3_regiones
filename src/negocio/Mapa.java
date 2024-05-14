@@ -18,6 +18,12 @@ public class Mapa {
         matrizDeRelacion = new int[0][0];
 	}
 
+    /**
+     * Agrega una relación al mapa entre dos provincias.
+     * @param nombreProvincia1
+     * @param nombreProvincia2
+     * @param similitud
+     */
     public void agregarRelacion(String nombreProvincia1, String nombreProvincia2, int similitud)
 	{
 		validarRelacion(nombreProvincia1, nombreProvincia2);
@@ -32,10 +38,13 @@ public class Mapa {
         relaciones.add(relacion);
 	}
 
+    /**
+     * Elimina una relación entre dos provincias.
+     * @param nombreProvincia1
+     * @param nombreProvincia2
+     */
     public void eliminarRelacion(String nombreProvincia1, String nombreProvincia2)
 	{
-		validarProvincia(nombreProvincia1);
-		validarProvincia(nombreProvincia2);
 		validarRelacion(nombreProvincia1, nombreProvincia2);
 
         Provincia provinciaA = provincias.get(nombreProvincia1);
@@ -50,16 +59,25 @@ public class Mapa {
         relaciones.remove(Relacion.obtenerRelacion(relaciones, provinciaA, provinciaB));
 	}
 
+    /**
+     * Valida si una relación entre dos provincias es correcta.
+     * @param nombreProvincia1
+     * @param nombreProvincia2
+     */
     private void validarRelacion (String nombreProvincia1, String nombreProvincia2) {
         if (!existeProvincia(nombreProvincia1) || !existeProvincia(nombreProvincia2) || nombreProvincia1 == nombreProvincia2) {
             throw new IllegalArgumentException("La relación es inválida");
         }
     }
 
+    /**
+     * Informa si ya existe una relación entre dos provincias.
+     * @param nombreProvincia1
+     * @param nombreProvincia2
+     * @return booleano indicando si existe la relación.
+     */
     public boolean existeRelacion(String nombreProvincia1, String nombreProvincia2)
 	{
-		validarProvincia(nombreProvincia1);
-		validarProvincia(nombreProvincia2);
 		validarRelacion(nombreProvincia1, nombreProvincia2);
 
         int idProv1 = provincias.get(nombreProvincia1).obtenerId();
@@ -68,7 +86,17 @@ public class Mapa {
 		return matrizDeRelacion[idProv1][idProv2] > 0;
 	}
 
+    /**
+     * Agrega una provincia al mapa.
+     * @param nombreProvincia
+     * @param coordenadas
+     */
     public void agregarProvincia (String nombreProvincia, Coordinate coordenadas) {
+        
+        if (existeProvincia(nombreProvincia)) {
+            throw new IllegalArgumentException("La provincia ya existe");
+        }
+
         Provincia provincia = new Provincia(provincias.size(), nombreProvincia, coordenadas);
         provincias.put(nombreProvincia, provincia);
 
@@ -82,14 +110,19 @@ public class Mapa {
             }
         }
 
-        // Update the adjacency matrix and the number of vertices
         matrizDeRelacion = nuevaMatrizRelacion;
     }
 
+    /**
+     * Elimina provincia del mapa.
+     * @param nombreProvincia
+     */
     public void eliminarProvincia (String nombreProvincia) {
-        validarProvincia(nombreProvincia);
+        if (!existeProvincia(nombreProvincia)) {
+            throw new IllegalArgumentException("La provincia no existe");
+        }
+        
         provincias.remove(nombreProvincia);
-
         int nuevoTamanio = matrizDeRelacion.length - 1;
         int[][] nuevaMatrizRelacion = new int[nuevoTamanio][nuevoTamanio];
 
@@ -102,16 +135,19 @@ public class Mapa {
         matrizDeRelacion = nuevaMatrizRelacion;
     }
 
-    public void validarProvincia(String nombreProvincia) {
-        if (!provincias.containsKey(nombreProvincia)) {
-            throw new IllegalArgumentException("La provincia es inválida");
-        }
-    }
-
+    /**
+     * Informa si ya existe la provincia dentro del mapa.
+     * @param nombreProvincia
+     * @return booleano indicando si la provincia ya existe.
+     */
     public boolean existeProvincia (String nombreProvincia) {
         return provincias.containsKey(nombreProvincia);
     }
 
+    /**
+     * Obtiene la dimensión de la matriz relación actual.
+     * @return dimensión de la matriz.
+     */
     public int obtenerDimensionMatrizRelacion() {
         return matrizDeRelacion.length;
     }
@@ -120,7 +156,11 @@ public class Mapa {
         Provincia provincia = provincias.get(nombreProvincia);
         return provincia;
     }
-    
+
+    /**
+     * Obtiene lista provincias del mapa.
+     * @return  lista de provincias agregadas al mapa.
+     */
     public ArrayList<String> obtenerProvincias() {
         ArrayList<String> listaProvincias = new ArrayList<>();
         listaProvincias.addAll(provincias.keySet());
@@ -129,10 +169,20 @@ public class Mapa {
         return listaProvincias;
     }
 
+    /**
+     * Obtiene el objeto provincia a partir de un nombre de provincia.
+     * @param nombreProvincia
+     * @return objeto provincia.
+     */
     public Provincia obtenerProvinciaPorNombre(String nombreProvincia) {
         return provincias.get(nombreProvincia);
     }
 
+    /**
+     * Obtiene provincia por id.
+     * @param id
+     * @return  objeto provincia.
+     */
     public Provincia obtenerProvinciaPorId(int id) {
         
         for (Provincia provincia : provincias.values()) {
@@ -144,6 +194,11 @@ public class Mapa {
         throw new IllegalArgumentException("Provincia not found for id: " + id);
     }
 
+    /**
+     * Genera las regiones dentro del mapa.
+     * @param cantidadRegiones
+     * @param algoritmo
+     */
     public void generarRegiones(int cantidadRegiones, String algoritmo) {
         matrizDeRegiones = new int[provincias.size()][provincias.size()];
         if (algoritmo == "Prim") {
@@ -159,6 +214,12 @@ public class Mapa {
         matrizDeRegiones = dividirRegiones(matrizDeRegiones, cantidadRegiones);
     }
     
+    /**
+     * Divida el mapa en la cantidad de regiones solicitadas.
+     * @param matrizDeRegiones
+     * @param cantidadRegiones
+     * @return matriz resultante luego de dividir en regiones.
+     */
     public int[][] dividirRegiones(int[][] matrizDeRegiones, int cantidadRegiones) {
         int[][] matrizResultado = new int[matrizDeRegiones.length][matrizDeRegiones.length];
 
@@ -194,23 +255,43 @@ public class Mapa {
         return matrizResultado;
     }
 
+    /**
+     * Obtiene matriz de regiones.
+     * @return matriz de regiones.
+     */
     public int[][] obtenerMatrizRegiones() {
         return matrizDeRegiones;
     }
 
+    /**
+     * Obtiene matriz de relación.
+     * @return matriz de relación.
+     */
     public int[][] obtenerMatrizRelacion() {
         return matrizDeRelacion;
     }
 
+    /**
+     * Indica si el mapa es conexo utilizando BFS.
+     * @param matriz
+     * @return booleano indicando si el mapa es conexo o no.
+     */
     public boolean esMapaConexo(int[][] matriz) {
         
         return BFS.grafoEsConexo(matriz);
     }
     
+    /**
+     * Obtiene lista de relaciones creadas hasta el momento.
+     * @return lista de objetos de tipo Relación.
+     */
     public ArrayList<Relacion> obtenerRelaciones() {
         return relaciones;
     }
     
+    /**
+     * Reinicia el mapa.
+     */
     public void reiniciarMapa() {
 
         matrizDeRelacion = new int[0][0];
