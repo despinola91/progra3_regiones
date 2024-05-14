@@ -143,27 +143,28 @@ public class MainForm
 		reset();
 	}
 	
-	private void detectarCoordenadas() 
-	{	
-		_mapa.addMouseListener(new MouseAdapter() 
-		{
-			@SuppressWarnings("unchecked")
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-			if (e.getButton() == MouseEvent.BUTTON1)
-			{
-				Coordinate coordenadas = (Coordinate)_mapa.getPosition(e.getPoint());
-				String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
+	private void detectarCoordenadas() {
+	    _mapa.addMouseListener(new MouseAdapter() {
+	        @SuppressWarnings("unchecked")
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            if (e.getButton() == MouseEvent.BUTTON1) {
+	                Coordinate coordenadas = (Coordinate) _mapa.getPosition(e.getPoint());
+	                String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
+	                if (nombre != null && !nombre.isEmpty()) {
+	                    if (mapa.existeProvincia(nombre)) {
+	                        JOptionPane.showMessageDialog(null, "La provincia ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    }
+	                    else {
+	                        _mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
+	                        mapa.agregarProvincia(nombre, coordenadas);
 
-				if (nombre != null && !nombre.isEmpty()) {
-					_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
-					mapa.agregarProvincia(nombre, coordenadas);
-					
-					cargarDesplegablesProvincias();
-				}
-			}}
-		});
+	                        cargarDesplegablesProvincias();
+	                    }
+	                }
+	            }
+	        }
+	    });
 	}
 	
 	private void dibujarArista(Coordinate coordenadaProv1, Coordinate coordenadaProv2) {
