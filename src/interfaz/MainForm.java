@@ -143,7 +143,6 @@ public class MainForm
 		reset();
 	}
 	
-	//El usuario va agregando las provincias en el mapa
 	private void detectarCoordenadas() 
 	{	
 		_mapa.addMouseListener(new MouseAdapter() 
@@ -159,20 +158,18 @@ public class MainForm
 
 				if (nombre != null && !nombre.isEmpty()) {
 					_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
-					mapa.agregarProvincia(nombre, coordenadas); //se agregan las provincias en la matriz llamando a mapa del paquete Negocio
+					mapa.agregarProvincia(nombre, coordenadas);
 					
-					comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
-					comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
-
+					cargarDesplegablesProvincias();
 				}
 			}}
 		});
 	}
 	
-	//Se dibuja con una recta las relaciones entre provincias una vez agregada la similitud
 	private void dibujarArista(Coordinate coordenadaProv1, Coordinate coordenadaProv2) {
 	    ArrayList<Coordinate> listaCoordenadas = new ArrayList<>();
 	    
+		//Para dibujar una arista entre dos vertices, el objeto MapPolygonImpl requiere unir A con B y luego A nuevamente.
 	    listaCoordenadas.add(coordenadaProv1);
 	    listaCoordenadas.add(coordenadaProv2);
 	    listaCoordenadas.add(coordenadaProv1);
@@ -189,7 +186,7 @@ public class MainForm
 	    listaCoordenadas.add(coordenadaProv1);
 	    
 	    MapPolygonImpl relacion = new MapPolygonImpl(listaCoordenadas);
-	    relacion.setColor(color); // Establecer el color de la relación
+	    relacion.setColor(color);
 	    _mapa.addMapPolygon(relacion);
 	}
 	
@@ -220,7 +217,6 @@ public class MainForm
 	    comboBox_Algoritmo.addItem("Kruskal");
 	    
 	    
-	    //Logica del Boton Crear Regiones
 		JButton btnCrearRegiones = new JButton("Crear Regiones");
 		btnCrearRegiones.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -329,7 +325,7 @@ public class MainForm
 
 	private void dibujarMapa(int[][] matrizDeRelacion) {
 
-		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
+		_mapa.removeAllMapPolygons();
 		for (int i = 0; i < matrizDeRelacion.length; i++) {
 			for (int j = 0; j < matrizDeRelacion.length; j++) {  
 				if (matrizDeRelacion[i][j] > 0) {
@@ -340,7 +336,7 @@ public class MainForm
 	}
 
 	private void dibujarRegiones(int[][] matrizDeRelacion) {
-		_mapa.removeAllMapPolygons(); //Limpiamos el mapa antes de volver a dibujarlo
+		_mapa.removeAllMapPolygons();
 		for (int i = 0; i < matrizDeRelacion.length; i++) {
 			for (int j = 0; j < matrizDeRelacion.length; j++) {  
 				if (matrizDeRelacion[i][j] > 0) {
@@ -374,27 +370,24 @@ public class MainForm
 	    panelMuestraRelaciones.add(scrollPane);
 	}
 	
-	
-	// Se Agrega esta función
 	private void limpiarScrollPane() {
 	    panelMuestraRelaciones.revalidate();
 	    panelMuestraRelaciones.repaint();
 	}
 
-	//para resetear todo
 	private void reset() {   
 	    btnReset.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent arg0) {
 	            _mapa.removeAllMapMarkers();
 	            _mapa.removeAllMapPolygons();
 	            mapa.reiniciarMapa();
-	            limpiarScrollPane(); // Llama a la función para limpiar el JScrollPane
-				limpiarDesplegablesProvincias();
+	            limpiarScrollPane();
+				cargarDesplegablesProvincias();
 	        }
 	    });
 	}
 
-	private void limpiarDesplegablesProvincias() {
+	private void cargarDesplegablesProvincias() {
 		comboBox_Provincia1.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 		comboBox_Provincia2.setModel(new DefaultComboBoxModel<>(mapa.obtenerProvincias().toArray(new String[0])));
 	}	
