@@ -163,7 +163,12 @@ public class MainForm
 
 				if (nombre != null && !nombre.isEmpty()) {
 					_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
-					mapa.agregarProvincia(nombre, coordenadas);
+					
+					try {
+                        mapa.agregarProvincia(nombre, coordenadas);
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
 					
 					cargarDesplegablesProvincias();
 				}
