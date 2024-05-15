@@ -59,6 +59,9 @@ public class MainForm
 	
 	private Mapa mapa;
 
+	JButton btnCrearRelacion;
+	JButton btnEliminarRelacion;
+
 	/**
 	 * Launch the application.
 	 */
@@ -139,7 +142,7 @@ public class MainForm
 		detectarCoordenadas();	
 		cargarRelaciones();
 		dividirRegiones();
-		mostrarRelaciones();
+		mostrarRelaciones(false);
 		reset();
 	}
 	
@@ -230,8 +233,10 @@ public class MainForm
 		                if (mapa.esMapaConexo(mapa.obtenerMatrizRelacion())) {
 		                	mapa.generarRegiones(numRegiones, algoritmo);
 		                	dibujarRegiones(mapa.obtenerMatrizRegiones());
-		                	mostrarRelaciones();
-						
+		                	mostrarRelaciones(true);
+
+							btnCrearRelacion.setEnabled(false);
+							btnEliminarRelacion.setEnabled(false);
 		                }else {
 							JOptionPane.showMessageDialog(null, "Todas las provincias deben tener al menos una similitud cargada (Grafo inconexo!)", "Error", JOptionPane.ERROR_MESSAGE);
 						}
@@ -275,8 +280,8 @@ public class MainForm
 	    lblSimilitud.setBounds(25, 130, 77, 23);
 	    panelControlRelaciones.add(lblSimilitud);
 	    
-	    JButton btnCrearRelacion = new JButton("Crear Relacion");
-	    btnCrearRelacion.addActionListener(new ActionListener() {
+	    btnCrearRelacion = new JButton("Crear Relacion");
+		btnCrearRelacion.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            String nombreProvincia1 = comboBox_Provincia1.getSelectedItem().toString();	            
 	            String nombreProvincia2 = comboBox_Provincia2.getSelectedItem().toString();
@@ -288,7 +293,7 @@ public class MainForm
 	                    if (!nombreProvincia1.equals(nombreProvincia2)) {
 	                        mapa.agregarRelacion(nombreProvincia1, nombreProvincia2, similitud);
 							dibujarMapa(mapa.obtenerMatrizRelacion());
-							mostrarRelaciones();
+							mostrarRelaciones(false);
 	                    } else {
 	                        JOptionPane.showMessageDialog(null, "Las dos provincias seleccionadas son iguales, por favor seleccione provincias diferentes.", "Error", JOptionPane.ERROR_MESSAGE);
 	                    }
@@ -298,20 +303,23 @@ public class MainForm
 	            } catch (NumberFormatException ex) {
 	                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
 	            }
+				catch (IllegalArgumentException ex) {
+	                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	            }
 	        }
 	    });
 	    btnCrearRelacion.setBounds(9, 185, 134, 23);
 	    panelControlRelaciones.add(btnCrearRelacion);
 	    
-	    JButton btnEliminarRelacion = new JButton("Eliminar Relacion");
-	    btnEliminarRelacion.addActionListener(new ActionListener() {
+	    btnEliminarRelacion = new JButton("Eliminar Relacion");
+		btnEliminarRelacion.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
 	            String nombreProvincia1 = comboBox_Provincia1.getSelectedItem().toString();            
 	            String nombreProvincia2 = comboBox_Provincia2.getSelectedItem().toString();
 	            
 	            mapa.eliminarRelacion(nombreProvincia1, nombreProvincia2);
 				dibujarMapa(mapa.obtenerMatrizRelacion());
-				mostrarRelaciones();
+				mostrarRelaciones(false);
 	        }
 	    });
 	    btnEliminarRelacion.setBounds(151, 185, 138, 23);
@@ -346,7 +354,7 @@ public class MainForm
 		}
 	}
 
-	private void mostrarRelaciones() {
+	private void mostrarRelaciones(boolean soloRegiones) {
 		JLabel lblRelaciones = new JLabel("Similitudes");
 		lblRelaciones.setForeground(new Color(0, 255, 0));
 		lblRelaciones.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
@@ -356,7 +364,15 @@ public class MainForm
 	    String[] columnas = {"Origen", "Destino", "Similaridad"};
 	    DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 	    
-	    for (Relacion relacion : mapa.obtenerRelaciones()) {
+		ArrayList<Relacion> relaciones = new ArrayList<Relacion>();
+		if(soloRegiones) {
+			relaciones = mapa.obtenerRelacionesRegiones();
+		}
+		else {
+			relaciones = mapa.obtenerRelaciones();
+		}
+
+	    for (Relacion relacion : relaciones) {
 	        Provincia provinciaA = relacion.obtenerProvincias().get(0);
 	        Provincia provinciaB = relacion.obtenerProvincias().get(1);
 	        int similitud = relacion.obtenerSimilitud();
@@ -383,6 +399,9 @@ public class MainForm
 	            mapa.reiniciarMapa();
 	            limpiarScrollPane();
 				cargarDesplegablesProvincias();
+
+				btnCrearRelacion.setEnabled(true);
+				btnEliminarRelacion.setEnabled(true);
 	        }
 	    });
 	}
