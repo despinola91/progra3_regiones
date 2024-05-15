@@ -162,14 +162,13 @@ public class MainForm
 				String nombre = JOptionPane.showInputDialog("Nombre provincia: ");
 
 				if (nombre != null && !nombre.isEmpty()) {
-					_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
-					
 					try {
-                        mapa.agregarProvincia(nombre, coordenadas);
+						mapa.agregarProvincia(nombre, coordenadas);
+						_mapa.addMapMarker(new MapMarkerDot(nombre, coordenadas));
                     } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
-					
+
 					cargarDesplegablesProvincias();
 				}
 			}}
