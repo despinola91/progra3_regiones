@@ -68,6 +68,10 @@ public class Mapa {
         if (!existeProvincia(nombreProvincia1) || !existeProvincia(nombreProvincia2) || nombreProvincia1 == nombreProvincia2) {
             throw new IllegalArgumentException("La relación es inválida");
         }
+
+        if (existeRelacion(nombreProvincia1, nombreProvincia2)) {
+            throw new IllegalArgumentException("La relación ya existe");
+        }
     }
 
     /**
@@ -78,8 +82,6 @@ public class Mapa {
      */
     public boolean existeRelacion(String nombreProvincia1, String nombreProvincia2)
 	{
-		validarRelacion(nombreProvincia1, nombreProvincia2);
-
         int idProv1 = provincias.get(nombreProvincia1).obtenerId();
         int idProv2 = provincias.get(nombreProvincia2).obtenerId();
 
