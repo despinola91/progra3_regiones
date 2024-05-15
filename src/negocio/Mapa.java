@@ -68,6 +68,10 @@ public class Mapa {
         if (!existeProvincia(nombreProvincia1) || !existeProvincia(nombreProvincia2) || nombreProvincia1 == nombreProvincia2) {
             throw new IllegalArgumentException("La relación es inválida");
         }
+
+        if (existeRelacion(nombreProvincia1, nombreProvincia2)) {
+            throw new IllegalArgumentException("La relación ya existe");
+        }
     }
 
     /**
@@ -78,12 +82,24 @@ public class Mapa {
      */
     public boolean existeRelacion(String nombreProvincia1, String nombreProvincia2)
 	{
-		validarRelacion(nombreProvincia1, nombreProvincia2);
-
         int idProv1 = provincias.get(nombreProvincia1).obtenerId();
         int idProv2 = provincias.get(nombreProvincia2).obtenerId();
 
 		return matrizDeRelacion[idProv1][idProv2] > 0;
+	}
+
+    /**
+     * Informa si ya existe una relación entre dos provincias dentro de las regiones.
+     * @param nombreProvincia1
+     * @param nombreProvincia2
+     * @return booleano indicando si existe la relación.
+     */
+    public boolean existeRelacionRegiones(String nombreProvincia1, String nombreProvincia2)
+	{
+        int idProv1 = provincias.get(nombreProvincia1).obtenerId();
+        int idProv2 = provincias.get(nombreProvincia2).obtenerId();
+
+		return matrizDeRegiones[idProv1][idProv2] > 0;
 	}
 
     /**
@@ -282,7 +298,7 @@ public class Mapa {
     }
     
     /**
-     * Obtiene lista de relaciones creadas hasta el momento.
+     * Obtiene lista de relaciones creadas hasta el momento por el usuario.
      * @return lista de objetos de tipo Relación.
      */
     public ArrayList<Relacion> obtenerRelaciones() {
@@ -290,11 +306,34 @@ public class Mapa {
     }
     
     /**
+     * Obtiene una lista de relaciones resultantes luego de crear las regiones
+     * @return lista de relaciones
+     */
+    public ArrayList<Relacion> obtenerRelacionesRegiones() {
+        
+        ArrayList<Relacion> relaciones = new ArrayList<>();
+
+        for (int i = 0; i < matrizDeRegiones.length; i++) {
+            for (int j = i+1; j < matrizDeRegiones.length; j++) {
+                if (matrizDeRegiones[i][j] > 0){
+                    
+                    Provincia provinciaA = obtenerProvinciaPorId(i);
+                    Provincia provinciaB = obtenerProvinciaPorId(j);
+
+                    relaciones.add(new Relacion(provinciaA, provinciaB, matrizDeRegiones[i][j]));
+                }
+            }
+        }
+        return relaciones;
+    }
+
+    /**
      * Reinicia el mapa.
      */
     public void reiniciarMapa() {
 
         matrizDeRelacion = new int[0][0];
+        matrizDeRegiones = new int[0][0];
         provincias.clear();
         relaciones.clear();
     }
