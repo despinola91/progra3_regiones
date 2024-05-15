@@ -45,8 +45,6 @@ public class Mapa {
      */
     public void eliminarRelacion(String nombreProvincia1, String nombreProvincia2)
 	{
-		validarRelacion(nombreProvincia1, nombreProvincia2);
-
         Provincia provinciaA = provincias.get(nombreProvincia1);
         Provincia provinciaB = provincias.get(nombreProvincia2);
 
