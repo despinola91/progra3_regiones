@@ -26,6 +26,8 @@ class MapaTest {
 		assertTrue((mapa.existeProvincia("Santa Fe")));
 		assertTrue((mapa.existeProvincia("Corrientes")));
 		assertFalse((mapa.existeProvincia("Chaco")));
+
+		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.agregarProvincia("Buenos Aires", new Coordinate(50., 50)));
 	}
 
 	@Test
@@ -40,6 +42,7 @@ class MapaTest {
 		assertTrue(mapa.existeRelacion("Santa Fe", "Buenos Aires"));
 
 		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.agregarRelacion("Buenos Aires", "Buenos Aires", 5));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> mapa.agregarRelacion("Buenos Aires", "Chaco", 5));
 	}
 
 	@Test
