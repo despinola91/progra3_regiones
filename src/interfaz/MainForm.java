@@ -53,14 +53,16 @@ public class MainForm
 	private JButton btnReset;
 	
 	private JTextPane textPaneMuestraRelaciones;
+	private JTextPane textSimilitud;
+	private JTextPane textCantidadRegiones;
 
 	private JMapViewer _mapa;
 	private JLabel lblBandera;
 	
 	private Mapa mapa;
 
-	JButton btnCrearRelacion;
-	JButton btnEliminarRelacion;
+	private JButton btnCrearRelacion;
+	private JButton btnEliminarRelacion;
 
 	/**
 	 * Launch the application.
@@ -204,7 +206,7 @@ public class MainForm
 	    lblRegiones.setBounds(25, 54, 66, 23);
 	    panelControlRegiones.add(lblRegiones);
 	    
-	    JTextPane textCantidadRegiones = new JTextPane();
+	    textCantidadRegiones = new JTextPane();
 	    textCantidadRegiones.setBounds(133, 54, 62, 22);
 	    panelControlRegiones.add(textCantidadRegiones);
 	    
@@ -264,7 +266,7 @@ public class MainForm
 	    comboBox_Provincia2.setBounds(133, 80, 138, 22);
 	    panelControlRelaciones.add(comboBox_Provincia2);
 	    
-	    JTextPane textSimilitud = new JTextPane();
+	    textSimilitud = new JTextPane();
 	    textSimilitud.setBounds(133, 130, 62, 22);
 	    panelControlRelaciones.add(textSimilitud);
 	    
@@ -402,6 +404,8 @@ public class MainForm
 
 				btnCrearRelacion.setEnabled(true);
 				btnEliminarRelacion.setEnabled(true);
+				textSimilitud.setText(null);
+				textCantidadRegiones.setText(null);
 	        }
 	    });
 	}
