@@ -298,6 +298,9 @@ public class MainForm
 	            } catch (NumberFormatException ex) {
 	                JOptionPane.showMessageDialog(null, "Debe ingresar un numero entero", "Error", JOptionPane.ERROR_MESSAGE);
 	            }
+				catch (IllegalArgumentException ex) {
+	                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	            }
 	        }
 	    });
 	    btnCrearRelacion.setBounds(9, 185, 134, 23);
